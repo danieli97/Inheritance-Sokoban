@@ -209,6 +209,8 @@ public class SokobanGUI extends JFrame implements ActionListener {
 			Location loc = objects.get(i).location();
 			JLabel b = this.levelMap.get(loc);
 			String the_name = objects.get(i).getClass().getSimpleName();
+			
+			// change this part to work not only for storage & boxes but for any "Floor type" object & boxes (also players?)
 			if (the_name.equals("Box")) {
 				if (this.board.hasStorage(loc)) {
 					b.setIcon(this.boxAndStorageIcon);
