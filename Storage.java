@@ -4,7 +4,7 @@ package sokoban;
  * A class that represents the location of a storage spot in the
  * game Sokoban.
  */
-public class Storage extends Ambiguous {
+public class Storage implements Ambiguous {
 
 	/**
 	 * Initialize a storage spot with the specified location.
@@ -13,8 +13,7 @@ public class Storage extends Ambiguous {
 	 */
 	public Storage(Location loc) {
 		this.loc = loc;
-		this.name = "Storage";
-		this.floorObject = true;
+		this.iconFile = "Storage";
 		this.movable = false;
 	}
 	
