@@ -13,8 +13,7 @@ public class Wall implements Ambiguous {
 	 */
 	public Wall(Location loc) {
 		this.loc = loc;
-		this.name = "Wall";
-		this.floorObject = false;
+		this.iconFile = "file";
 		this.movable = false;
 	}
 
