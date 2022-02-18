@@ -4,7 +4,6 @@ public abstract class Ambiguous {
 	// Attributes
 	protected Location loc;
 	protected String name;
-	protected boolean floorObject;
 	protected boolean movable;
 	
 	// Methods
@@ -26,8 +25,8 @@ public abstract class Ambiguous {
 	}
 	
 	// Setters
-	public void setLocation(Location loc) {		// may need to make private or get rid of it all together
-		this.loc = loc;
+	public void moveTo(Location newLoc) {
+		this.loc = newLoc;
 	}
 	
 	// method that defines what happens when a player tries to move onto an object
