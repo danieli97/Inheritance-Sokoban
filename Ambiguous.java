@@ -3,7 +3,7 @@ package sokoban;
 public abstract class Ambiguous {
 	// Attributes
 	protected Location loc;
-	protected String name;
+	protected String iconFile;
 	protected boolean movable;
 	
 	// Methods
@@ -12,12 +12,8 @@ public abstract class Ambiguous {
 		return this.loc;
 	}
 	
-	public String name() {
-		return this.name;
-	}
-	
-	public boolean floorObject() {
-		return this.floorObject;
+	public String iconFile() {
+		return this.iconFile;
 	}
 	
 	public boolean movable() {
