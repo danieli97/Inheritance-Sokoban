@@ -1,6 +1,6 @@
 package sokoban;
 
-public class Box extends Ambiguous{
+public class Box implements Ambiguous{
 
 	/**
 	 * Initialize a box with the specified location.
@@ -9,8 +9,7 @@ public class Box extends Ambiguous{
 	 */
 	public Box(Location loc) {
 		this.loc = loc;
-		this.name = "Box";
-		this.floorObject = false;
+		this.iconFile = "file";
 		this.movable = true;
 	}
 
