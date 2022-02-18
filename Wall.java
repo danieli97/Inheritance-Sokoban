@@ -4,7 +4,7 @@ package sokoban;
  * A class that represents the location of a wall in the
  * game Sokoban.
  */
-public class Wall extends Ambiguous {
+public class Wall implements Ambiguous {
 
 	/**
 	 * Initialize a wall with the specified location.
