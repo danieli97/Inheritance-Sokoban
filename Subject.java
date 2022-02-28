@@ -2,6 +2,7 @@
  * Subject Interface
  * 
  * Used as Subject of Observer Design Pattern
+ * To be implemented by the Board class
  */
 
 public interface Subject {
