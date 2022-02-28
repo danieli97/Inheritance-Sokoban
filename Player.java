@@ -1,5 +1,5 @@
 // Player class
-public class Player extends Modification{
+public class Player extends Modification {
 	
 	// Attributes
 	// Inherited from Parent Modification Class
