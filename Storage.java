@@ -1,5 +1,5 @@
 // Storage class
-public class Storage extends Modification{
+public class Storage extends Modification {
 	
 	// Attributes
 	// Inherited from Parent Modification Class
