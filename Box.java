@@ -1,5 +1,5 @@
 // Box class
-public class Box extends Modification{
+public class Box extends Modification {
 	
 	// Attributes
 	// Inherited from Parent Modification Class
