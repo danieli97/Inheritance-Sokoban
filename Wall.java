@@ -1,5 +1,5 @@
 // Wall class
-public class Wall extends Modification{
+public class Wall extends Modification {
 	
 	// Attributes
 	// Inherited from Parent Modification Class
