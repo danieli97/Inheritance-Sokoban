@@ -24,3 +24,4 @@ public abstract class Modification implements Cloneable, Observer {
 	public abstract void update(Location playerLoc, Location newPlayerLoc);
 	
 }
+
