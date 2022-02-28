@@ -61,9 +61,7 @@ public class Board implements Subject {
 		}
 		
 	}
-	
 
-	
 }
 
 
