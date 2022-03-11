@@ -222,7 +222,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 			JLabel b = this.levelMap.get(loc);
 			String theName = objects.get(i).getClass().getSimpleName();
 			if (theName.equals("Box") || theName.equals("Storage")) {
-				// check if box on storage
+				// somehow check if box on storage
 				ImageIcon img = this.imageIcons.get(theName);
 				b.setIcon(img);
 			} else {
