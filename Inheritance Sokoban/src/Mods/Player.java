@@ -35,21 +35,29 @@ public class Player extends Modification {
 	}
 
 	@Override
-	public void update(String cmd, Map<int[], ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) {
-		if (cmd.equals("LEFT")) {
-			int[] newLoc = {this.loc.getX()-1, this.loc.getY()};
-			ArrayList<Location> spot = locs.get(newLoc);
+	public String update(String cmd, Map<Integer, ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) {
+		// can check the change in loc using the og location and Location object
+		// maybe this returns a cmd and null if none back to board which can recursively call notify with the cmd
+		// could return mod and cmd
+		// change to switch
+		switch(cmd){
+			case "LEFT":
+				int[] newLoc = {this.loc.getX()-1, this.loc.getY()};
+				ArrayList<Location> spot = locs.get();
 
-			this.loc.setX(this.loc.getX()-1);
+				this.loc.setX(this.loc.getX()-1);
+				return "PLEFT";
+			case "RIGHT":
+				this.loc.setX(this.loc.getX()+1);
+				return "PRIGHT";
+			case "UP":
+				this.loc.setY(this.loc.getY()+1);
+				return "PUP";
+			case "DOWN":
+				this.loc.setY(this.loc.getY()-1);
+				return "PDOWN";
 		}
-		else if (cmd.equals("RIGHT")) {
-			this.loc.setX(this.loc.getX()+1);
-		}
-		else if (cmd.equals("UP")) {
-			this.loc.setY(this.loc.getY()+1);
-		}
-		else if (cmd.equals("DOWN")) {
-			this.loc.setY(this.loc.getY()-1);
-		}
+
+		return null;
 	}
 }

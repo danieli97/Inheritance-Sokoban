@@ -35,6 +35,6 @@ public class Wall extends Modification {
 	}
 
 	@Override
-	public void update(String cmd, Map<int[], ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) { }
+	public String update(String cmd, Map<Integer, ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) {return null;}
 	
 }

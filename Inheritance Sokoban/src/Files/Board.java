@@ -1,7 +1,7 @@
 package Files;
 
 import Mods.*;
-//import Levels.*;
+import Levels.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,87 +15,69 @@ public class Board implements Subject {
 	
 	// Attributes
 	private ArrayList<Observer> observers;
-	private Map<int[], ArrayList<Location>> locs;			// get location object from coordinate
+	// this might be able to be an array/arraylist
+	private Map<Integer, ArrayList<Location>> locs;	// get location object from coordinate
 	private Map<Location, ArrayList<Modification>> modLocs;	// get mod from location object
 	private ArrayList<Modification> mods;					// list of mods
 	private int width;
 	private int height;
 	
-	// Constructors
-	// Default Constructor
-	public Board() {
-		
-		String fileName = "level00.txt";
-		
-		try {
-			ArrayList<String[]> levelArray = getLevelArray(fileName);
-			
-			// use levelArray to set modsList -> 
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		this.registerObservers();
-		
-		// replace this with this.readFile(defaultFile);
-	
-	}
-	
 	// General Constructor
 	public Board(String fileName) {
+		if (fileName == null){
+			fileName = "level00.txt";
+		}
 
 		this.mods = new ArrayList<Modification>();
-		this.locs = new HashMap<int[], ArrayList<Location>>();
+		this.locs = new HashMap<Integer, ArrayList<Location>>();
 		this.modLocs = new HashMap<Location, ArrayList<Modification>>();
 		this.observers = new ArrayList<Observer>();
 
-		Map<String, Modification> modsList = new HashMap<String, Modification>();
+		Map<String, Modification> clonables = new HashMap<String, Modification>();
 		Location tempLoc = new Location(-1,-1);
 		// instantiate one of each mod to be cloned	STUDENT ADDS THEIR MODS
-		modsList.put(Box.letter, new Box(tempLoc));
-		modsList.put(Player.letter, new Player(tempLoc));
-		modsList.put(Storage.letter, new Storage(tempLoc));
-		modsList.put(Wall.letter, new Wall(tempLoc));
+		clonables.put(Box.letter, new Box(tempLoc));
+		clonables.put(Player.letter, new Player(tempLoc));
+		clonables.put(Storage.letter, new Storage(tempLoc));
+		clonables.put(Wall.letter, new Wall(tempLoc));
 
-        //	read file
+        //	create modifications
 		try {
 			ArrayList<String[]> levelArray = getLevelArray(fileName);	// get level array
-			for (int y=levelArray.size()-1; y>=0; y--){		// 
-				for (int x=0; x<levelArray.get(y).length; x++){
-					int[] coord = {x,y};
-					locs.put(coord, new ArrayList<Location>());
-					// System.out.println("at coord " + x + "," + y + " found character " + levelArray.get(y)[x]);
-					// System.out.println(modsList.get(levelArray.get(y)[x]));
-					if (modsList.get(levelArray.get(y)[x]) != null){
-						Location curLoc = new Location(x,y);	// create Location instance at current location
-						Modification newMod = modsList.get(levelArray.get(y)[x]).makeCopy();	// create copy of mod with letter found
-						newMod.initLoc(curLoc);					// initialize location with instance of Location
-						this.mods.add(newMod);					// add mod to list of mods
-						ArrayList<Modification> curLocMods = new ArrayList<Modification>();	// create arrayList of Modifications
-						curLocMods.add(newMod);					// add mod to arraylist
-						this.modLocs.put(curLoc, curLocMods);	// put Location and respective list of mod in modLocs
-						this.locs.get(coord).add(curLoc);		// put current coordiate and new Location
-					} else if (!levelArray.get(y)[x].equals(" ")) {
-						// char in levelArray was not found in the modifications
-						System.out.println("Could not resolve char: \"" + levelArray.get(y)[x] + "\" to a modification");
-					}
-				}
-			}
-			// delete all initial mods from map and tempLoc??
-			// mods = null;
-			// tempLoc = null;
+			this.generateClones(levelArray, clonables);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Error loading level");
 			e.printStackTrace();
 		}
-		
+
 		this.registerObservers();	
 	}
 	
 	// Methods
+	private void generateClones(ArrayList<String[]> levelArray, Map<String, Modification> clonables){
+		for (int y=levelArray.size()-1; y>=0; y--){
+			for (int x=0; x<levelArray.get(y).length; x++){
+				this.locs.put(this.width * y + x, new ArrayList<Location>());
+				if (clonables.get(levelArray.get(y)[x]) != null){
+					Location curLoc = new Location(x,y);	// create Location instance at current location
+					Modification newMod = clonables.get(levelArray.get(y)[x]).makeCopy();	// create copy of mod with letter found
+					newMod.initLoc(curLoc);					// initialize location with instance of Location
+					this.mods.add(newMod);					// add mod to list of mods
+					ArrayList<Modification> curLocMods = new ArrayList<Modification>();	// create arrayList of Modifications
+					curLocMods.add(newMod);					// add mod to arraylist
+					this.modLocs.put(curLoc, curLocMods);	// put Location and respective list of mod in modLocs
+					this.locs.get(this.width * y + x).add(curLoc);	// put current coordiate and new Location
+				} else if (!levelArray.get(y)[x].equals(" ")) {
+					// char in levelArray was not found in the modifications
+					System.out.println("Could not resolve char: \"" + levelArray.get(y)[x] + "\" to a modification");
+				}
+			}
+		}
+		// delete all initial mods from map and tempLoc??
+		// mods = null;
+		// tempLoc = null;
+	}
 	
 	// given a level file name, method reads through the file and extracts relevant information
 	public ArrayList<String[]> getLevelArray(String fileName) throws IOException {
@@ -134,19 +116,19 @@ public class Board implements Subject {
 		
 	}
 
-	public void updateLocs() {
+	// public void updateLocs() {
 
-		for (int[] coord : this.locs.keySet()){
-			for (Location loc : this.locs.get(coord)){
-				if (coord[0] != loc.getX() || coord[1] != loc.getY()){
-					int[] moveTo = {loc.getX(), loc.getY()};
-					this.locs.get(moveTo).add(loc);
-					this.locs.get(coord).remove(loc);
-				}
-			}
-		}
+	// 	for (int y : this.locs.keySet()){
+	// 		for (int x : this.locs.get(y).keySet())
+	// 			for (Location loc : this.locs.get(x).get(y)){
+	// 				if (x != loc.getX() || y != loc.getY()){
+	// 					this.locs.get(loc.getX()).get(loc.getY()).add(loc);
+	// 					this.locs.get(x).get(y).remove(loc);
+	// 				}
+	// 			}
+	// 	}
 
-	}
+	// }
 	
 	// gets the width of the board
 	public int getWidth() {
@@ -180,7 +162,7 @@ public class Board implements Subject {
 	public Modification getPlayer() {
 		
 		for (Modification mod : this.mods) {
-			if (mod.letter.equals('P')) {
+			if (mod.letter.equals("P")) {
 				return mod;
 			}
 		}
@@ -231,10 +213,13 @@ public class Board implements Subject {
 
 	// Notifies all registered observers found in the ArrayList that there was an update
 	@Override
-	public boolean notifyObserver(String cmd) {
+	public boolean notifyObservers(String cmd) {
 		
 		for (Observer obs : this.observers) {
-			obs.update(cmd, locs, modLocs);
+			String newCmd = obs.update(cmd, locs, modLocs);
+			if (newCmd != null){
+				this.notifyObservers(cmd);
+			}
 		}
 		
 		return true;

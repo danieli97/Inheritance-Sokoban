@@ -26,6 +26,6 @@ public abstract class Modification implements Cloneable, Observer {
 	
 	// Abstract Methods
 	public abstract Modification makeCopy();
-	public abstract void update(String cmd, Map<int[], ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs);
+	public abstract String update(String cmd, Map<Integer, ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs);
 	
 }

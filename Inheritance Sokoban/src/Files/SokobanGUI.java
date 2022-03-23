@@ -25,7 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+// import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class SokobanGUI extends JFrame implements ActionListener {
@@ -299,37 +299,39 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		
 		String cmd = e.getActionCommand();
 
-		if (cmd.equals(RELOAD)) {
-			if (this.filename.isEmpty()) {
-				this.board = new Board();
-				this.initLevel();
-			}
-			else {
-				this.board = new Board(this.filename);
-				this.initLevel();
-			}
+		switch (cmd){
+			case RELOAD:
+				if (this.filename.isEmpty()) {	// maybe dont need this if default will pass null
+					this.board = new Board(null);
+					this.initLevel();
+				}
+				else {
+					this.board = new Board(this.filename);
+					this.initLevel();
+				}
+				break;
+			case LOAD:
+				Path path = FileSystems.getDefault().getPath("src", "sokoban");		// will probably need to change this line
+				final JFileChooser fc = new JFileChooser();
+				fc.setCurrentDirectory(path.toFile());
+				int returnVal = fc.showOpenDialog(this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					this.board = new Board(file.getName());
+					this.filename = file.getName();
+					this.initLevel();
+				}
+				break;
+			case EXIT:
+				this.dispose();
+				break;
+			default: 
+				board.notifyObservers(cmd);
 		}
-		else if (cmd.equals(LOAD)) {
-			Path path = FileSystems.getDefault().getPath("src", "sokoban");		// will probably need to change this line
-			final JFileChooser fc = new JFileChooser();
-			fc.setCurrentDirectory(path.toFile());
-			int returnVal = fc.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = fc.getSelectedFile();
-				this.board = new Board(file.getName());
-				this.filename = file.getName();
-				this.initLevel();
-			}
-		}
-		else if (cmd.equals(EXIT)) {
-			this.dispose();
-		}
-		else {
-			board.notifyObserver(cmd);
-		}
-		// update the locs
-		this.board.updateLocs();
 
+		// update the locs
+		// this.board.updateLocs();
+		// redraw
 		this.drawAll();
 	}
 	
