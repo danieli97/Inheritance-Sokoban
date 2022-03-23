@@ -28,7 +28,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
 public class SokobanGUI extends JFrame implements ActionListener {
 	
 	private static final String LEFT = "LEFT";
@@ -58,7 +57,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	public SokobanGUI(String path) throws IOException {
 		
 		super("Sokoban");
-		this.board = new Board();
+		this.board = new Board("level00.txt");
 		this.yourPath = path;
 		this.filename = "";
 		this.levelMap = new HashMap<>();
@@ -111,12 +110,12 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		return theIcons;
 	}
 	
-	private final ImageIcon createImageIcon(String path, String description) {
-		java.net.URL imgURL = getClass().getResource(path);
+	private final ImageIcon createImageIcon(String file, String description) {
+		java.net.URL imgURL = getClass().getResource(this.yourPath + "Icons\\" + file);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL, description);
 		} else {
-			System.err.println("Couldn't find file: " + path);
+			System.err.println("Couldn't find file: " + this.yourPath + "Icons\\" + file);
 			return null;
 		}
 	}
@@ -299,28 +298,8 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		String cmd = e.getActionCommand();
-		
-		Location loc = this.board.getPlayer().getLoc();
-		
-		JLabel b = this.levelMap.get(loc);
-		boolean moved = false;
-		if (cmd.equals(LEFT)) {
-			Location newLoc = new Location(loc.getX()-1, loc.getY());
-			moved = this.board.notifyObserver(loc, newLoc);
-		}
-		else if (cmd.equals(RIGHT)) {
-			Location newLoc = new Location(loc.getX()+1, loc.getY());
-			moved = this.board.notifyObserver(loc, newLoc);
-		}
-		else if (cmd.equals(UP)) {
-			Location newLoc = new Location(loc.getX(), loc.getY()+1);
-			moved = this.board.notifyObserver(loc, newLoc);
-		}
-		else if (cmd.equals(DOWN)) {
-			Location newLoc = new Location(loc.getX(), loc.getY()-1);
-			moved = this.board.notifyObserver(loc, newLoc);
-		}
-		else if (cmd.equals(RELOAD)) {
+
+		if (cmd.equals(RELOAD)) {
 			if (this.filename.isEmpty()) {
 				this.board = new Board();
 				this.initLevel();
@@ -340,31 +319,24 @@ public class SokobanGUI extends JFrame implements ActionListener {
 				this.board = new Board(file.getName());
 				this.filename = file.getName();
 				this.initLevel();
-				
 			}
-			
 		}
 		else if (cmd.equals(EXIT)) {
 			this.dispose();
 		}
-		
-		if (moved) {
-			b.setIcon(null);
-			
-			this.drawAll();
-			
-			if (this.board.isSolved()) {
-				JOptionPane.showMessageDialog(this, "You won!");
-			}
+		else {
+			board.notifyObserver(cmd);
 		}
+		// update the locs
+		this.board.updateLocs();
+
+		this.drawAll();
 	}
-	
 	
 	public static void main(String[] args) throws IOException {
 		
-		// 
-		String yourPath = "C:\\Users\\danie\\eclipse-workspace\\Inheritance Sokoban\\src\\";
-		
+		String yourPath = "C:\\Users\\brian\\OneDrive\\Desktop\\UNI 1\\Year 4\\W2022\\CISC 499\\Inheritance-Sokoban\\Inheritance Sokoban\\src\\";
+
 		SokobanGUI gui = new SokobanGUI(yourPath);
 		gui.setVisible(true);
 		

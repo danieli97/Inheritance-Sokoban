@@ -1,18 +1,20 @@
 package Mods;
 
 import Files.*;
+import java.util.*;
 
 
 // Player class
 public class Storage extends Modification {
 	
 	// Attributes
+	public static String letter = "S";
 	// Inherited from Parent Modification Class
 	
 	// Constructor
 	public Storage(Location loc) {
 		
-		setLoc(loc);
+		this.initLoc(loc);
 		this.onFloor = false;
 		
 	}
@@ -33,12 +35,7 @@ public class Storage extends Modification {
 	}
 
 	@Override
-	public void update(Location playerLoc, Location newPlayerLoc) {
+	public void update(String cmd, Map<int[], ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) {
 		
-		if (theBoard.isFree(newPlayerLoc)) {
-			
-			setLoc(newPlayerLoc);
-			
-		}
 	}
 }

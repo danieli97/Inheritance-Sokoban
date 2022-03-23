@@ -1,5 +1,7 @@
 package Files;
 
+import java.util.*;
+
 /* 
  * Observer Interface
  * 
@@ -7,7 +9,7 @@ package Files;
  * To be implemented by any child of the Modification class
  */
 public interface Observer {
-	
-	public void update(Location playerLoc, Location newPlayerLoc);
+
+    public void update(String cmd, Map<int[], ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs);
 	
 }

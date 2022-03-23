@@ -1,17 +1,19 @@
 package Mods;
 
 import Files.*;
+import java.util.*;
 
 // Box class
 public class Box extends Modification {
 	
 	// Attributes
+	public static String letter = "B";
 	// Inherited from Parent Modification Class
 	
 	// Constructor
 	public Box(Location loc) {
 		
-		setLoc(loc);
+		this.initLoc(loc);
 		this.onFloor = false;
 		
 	}
@@ -32,42 +34,43 @@ public class Box extends Modification {
 	}
 
 	@Override
-	public void update(Location playerLoc, Location newPlayerLoc) {
+	public void update(String cmd, Map<int[], ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) {
 		
-		Location boxLoc = this.getLoc();
+		// Location boxLoc = this.getLoc();
 		
-		if (boxLoc.equals(newPlayerLoc)) {
+		// if (boxLoc.equals(newPlayerLoc)) {
 			
-			String direction = newPlayerLoc.compareLocs(playerLoc);
+		// 	String direction = newPlayerLoc.compareLocs(playerLoc);
 			
-			if (direction.equals("RIGHT")) {
+		// 	if (direction.equals("RIGHT")) {
 				
-				Location newLoc = new Location(boxLoc.getX() + 1, boxLoc.getY());
-				if (theBoard.isFree(newLoc)) {
-					this.setLoc(newLoc);
-				}
-			} else if (direction.equals("LEFT")) {
+		// 		Location newLoc = new Location(boxLoc.getX() + 1, boxLoc.getY());
+		// 		if (theBoard.isFree(newLoc)) {
+		// 			this.setLoc(newLoc);
+		// 		}
+		// 	} else if (direction.equals("LEFT")) {
 				
-				Location newLoc = new Location(boxLoc.getX() - 1, boxLoc.getY());
-				if (theBoard.isFree(newLoc)) {
-					this.setLoc(newLoc);
-				}
+		// 		Location newLoc = new Location(boxLoc.getX() - 1, boxLoc.getY());
+		// 		if (theBoard.isFree(newLoc)) {
+		// 			this.setLoc(newLoc);
+		// 		}
 				
-			} else if (direction.equals("UP")) {
+		// 	} else if (direction.equals("UP")) {
 				
-				Location newLoc = new Location(boxLoc.getX(), boxLoc.getY() + 1);
-				if (theBoard.isFree(newLoc)) {
-					this.setLoc(newLoc);
-				}
+		// 		Location newLoc = new Location(boxLoc.getX(), boxLoc.getY() + 1);
+		// 		if (theBoard.isFree(newLoc)) {
+		// 			this.setLoc(newLoc);
+		// 		}
 				
-			} else if (direction.equals("DOWN")) {
+		// 	} else if (direction.equals("DOWN")) {
 				
-				Location newLoc = new Location(boxLoc.getX(), boxLoc.getY() - 1);
-				if (theBoard.isFree(newLoc)) {
-					this.setLoc(newLoc);
-				}
+		// 		Location newLoc = new Location(boxLoc.getX(), boxLoc.getY() - 1);
+		// 		if (theBoard.isFree(newLoc)) {
+		// 			this.setLoc(newLoc);
+		// 		}
 				
-			}
-		}
+		// 	}
+		// }
+
 	}
 }

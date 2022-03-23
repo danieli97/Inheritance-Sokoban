@@ -11,6 +11,6 @@ public interface Subject {
 	
 	public void register(Observer obs);
 	public void unregister(Observer obs);
-	public boolean notifyObserver(Location playerLoc, Location newPlayerLoc);
+	public boolean notifyObserver(String cmd);
 	
 }
