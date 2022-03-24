@@ -111,7 +111,20 @@ public class Board implements Subject {
 		
 		this.setWidth(widthCount);
 		this.setHeight(heightCount);
-
+		
+		for (int i = 0; i < levelArray.size(); i++) {
+			if (levelArray.get(i).length < widthCount) {
+				String[] newLine = new String[widthCount];
+				for (int j = 0; j < levelArray.get(i).length; j++) {
+					newLine[j] = levelArray.get(i)[j];
+				}
+				for (int k = levelArray.get(i).length; k < widthCount; k++) {
+					newLine[k] = " ";
+				}
+				levelArray.set(i, newLine);
+			}
+		}
+		
 		return levelArray;
 		
 	}
