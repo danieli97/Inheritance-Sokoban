@@ -1,14 +1,13 @@
 package Files;
 
-import java.util.*;
-
 public abstract class Modification implements Cloneable, Observer {
 
 	// Attributes
 	protected Location loc;
-	public static String letter;
-	protected Board theBoard;
+	protected String letter;
 	protected boolean onFloor;
+	protected String img;
+	protected static Board board;
 	
 	// Regular Methods
 	public Location getLoc() {
@@ -19,13 +18,25 @@ public abstract class Modification implements Cloneable, Observer {
 		this.loc = loc;
 	}
 	
-	public void setLoc(Location loc) {
-		this.loc.setX(loc.getX());
-		this.loc.setY(loc.getY());
+	public void setLoc(int x, int y) {
+		this.loc.setX(x);
+		this.loc.setY(y);
 	}
 	
+	public String getLetter(){
+		return this.letter;
+	}
+
+	public int getCoord(){
+		return Modification.board.getWidth() * this.loc.getY() + this.loc.getY();
+	}
+
+	public int getCoord(int x, int y){
+		return Modification.board.getWidth() * y + x;
+	}
+
 	// Abstract Methods
 	public abstract Modification makeCopy();
-	public abstract String update(String cmd, Map<Integer, ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs);
+	public abstract String update(String cmd);
 	
 }

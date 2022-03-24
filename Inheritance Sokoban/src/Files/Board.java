@@ -14,7 +14,7 @@ import java.util.*;
 public class Board implements Subject {
 	
 	// Attributes
-	private ArrayList<Observer> observers;
+	private ArrayList<Observer> observers;	// might be same as mods
 	// this might be able to be an array/arraylist
 	private Map<Integer, ArrayList<Location>> locs;	// get location object from coordinate
 	private Map<Location, ArrayList<Modification>> modLocs;	// get mod from location object
@@ -34,13 +34,20 @@ public class Board implements Subject {
 		this.observers = new ArrayList<Observer>();
 
 		Map<String, Modification> clonables = new HashMap<String, Modification>();
+		ArrayList<Modification> cloneTemplates = new ArrayList<Modification>();
 		Location tempLoc = new Location(-1,-1);
-		// instantiate one of each mod to be cloned	STUDENT ADDS THEIR MODS
-		clonables.put(Box.letter, new Box(tempLoc));
-		clonables.put(Player.letter, new Player(tempLoc));
-		clonables.put(Storage.letter, new Storage(tempLoc));
-		clonables.put(Wall.letter, new Wall(tempLoc));
 
+		// cloneTemplates.add(new {YOUR MOD NAME}(tempLoc));
+		Player.board = this;
+		cloneTemplates.add(new Box(tempLoc));
+		cloneTemplates.add(new Player(tempLoc));
+		cloneTemplates.add(new Wall(tempLoc));
+		cloneTemplates.add(new Storage(tempLoc));
+
+		for (Modification mod : cloneTemplates){
+			clonables.put(mod.letter, mod);
+		}
+		
         //	create modifications
 		try {
 			ArrayList<String[]> levelArray = getLevelArray(fileName);	// get level array
@@ -60,17 +67,19 @@ public class Board implements Subject {
 			for (int x=0; x<levelArray.get(y).length; x++){
 				this.locs.put(this.width * y + x, new ArrayList<Location>());
 				if (clonables.get(levelArray.get(y)[x]) != null){
-					Location curLoc = new Location(x,y);	// create Location instance at current location
+					// create clone
+					Location curLoc = new Location(x,y);			// create Location instance at current location
 					Modification newMod = clonables.get(levelArray.get(y)[x]).makeCopy();	// create copy of mod with letter found
-					newMod.initLoc(curLoc);					// initialize location with instance of Location
-					this.mods.add(newMod);					// add mod to list of mods
-					ArrayList<Modification> curLocMods = new ArrayList<Modification>();	// create arrayList of Modifications
-					curLocMods.add(newMod);					// add mod to arraylist
-					this.modLocs.put(curLoc, curLocMods);	// put Location and respective list of mod in modLocs
+					newMod.initLoc(curLoc);							// initialize location with instance of Location
+					// add values to data
+					this.mods.add(newMod);							// add mod to list of mods
+					ArrayList<Modification> curLocMods = new ArrayList<Modification>();		// create arrayList of Modifications
+					curLocMods.add(newMod);							// add mod to arraylist
+					this.modLocs.put(curLoc, curLocMods);			// put Location and respective list of mod in modLocs
 					this.locs.get(this.width * y + x).add(curLoc);	// put current coordiate and new Location
 				} else if (!levelArray.get(y)[x].equals(" ")) {
 					// char in levelArray was not found in the modifications
-					System.out.println("Could not resolve char: \"" + levelArray.get(y)[x] + "\" to a modification");
+					System.out.println("Could not resolve symbol: \"" + levelArray.get(y)[x] + "\" to a modification");
 				}
 			}
 		}
@@ -143,7 +152,32 @@ public class Board implements Subject {
 		return this.height;
 		
 	}
+
+	public ArrayList<Modification> getMods() {
+
+		return this.mods;
+
+	}
+
+	public Map<Integer, ArrayList<Location>> getLocs() {
+
+		return this.locs;
+
+	}
+
+	public Map<Location, ArrayList<Modification>> getModLocs(){
+
+		return this.modLocs;
+
+	}
 	
+	public void changeLoc(int startCoord, int newCoord, Location loc){
+
+		this.locs.get(startCoord).remove(loc);
+		this.locs.get(newCoord).add(loc);
+
+	}
+
 	// Sets the board width to the appropriate width based on the level file
 	public void setWidth(int width) {
 		
@@ -216,9 +250,9 @@ public class Board implements Subject {
 	public boolean notifyObservers(String cmd) {
 		
 		for (Observer obs : this.observers) {
-			String newCmd = obs.update(cmd, locs, modLocs);
+			String newCmd = obs.update(cmd);
 			if (newCmd != null){
-				this.notifyObservers(cmd);
+				this.notifyObservers(newCmd);
 			}
 		}
 		

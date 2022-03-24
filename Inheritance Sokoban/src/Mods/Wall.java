@@ -1,14 +1,11 @@
 package Mods;
 
 import Files.*;
-import java.util.*;
-
 
 // Wall class
 public class Wall extends Modification {
 	
 	// Attributes
-	public static String letter = "W";
 	// Inherited from Parent Modification Class
 	
 	// Constructor
@@ -16,7 +13,9 @@ public class Wall extends Modification {
 		
 		this.initLoc(loc);
 		this.onFloor = false;
-		
+		this.letter = "W";
+		this.img = "Wall";
+
 	}
 	
 	// Methods
@@ -35,6 +34,8 @@ public class Wall extends Modification {
 	}
 
 	@Override
-	public String update(String cmd, Map<Integer, ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) {return null;}
+	public String update(String cmd) {
+		return null;
+	}
 	
 }

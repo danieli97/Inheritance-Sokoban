@@ -1,21 +1,21 @@
 package Mods;
 
 import Files.*;
-import java.util.*;
 
 
 // Player class
 public class Storage extends Modification {
 	
 	// Attributes
-	public static String letter = "S";
 	// Inherited from Parent Modification Class
 	
 	// Constructor
 	public Storage(Location loc) {
 		
 		this.initLoc(loc);
-		this.onFloor = false;
+		this.onFloor = true;
+		this.letter = "S";
+		this.img = "Storage";
 		
 	}
 	
@@ -35,7 +35,7 @@ public class Storage extends Modification {
 	}
 
 	@Override
-	public String update(String cmd, Map<Integer, ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) {
+	public String update(String cmd) {
 		return null;
 	}
 }

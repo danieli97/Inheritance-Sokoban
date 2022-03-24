@@ -1,21 +1,24 @@
 package Mods;
 
 import Files.*;
-import java.util.*;
 
 // Box class
 public class Box extends Modification {
 	
 	// Attributes
-	public static String letter = "B";
 	// Inherited from Parent Modification Class
+
+	private final String DEFAULT_BOX = "Box";
+	private final String STORAGE_BOX = "box_on_storage";
 	
 	// Constructor
 	public Box(Location loc) {
 		
 		this.initLoc(loc);
 		this.onFloor = false;
-		
+		this.letter = "B";
+		this.img = DEFAULT_BOX;
+
 	}
 	
 	// Methods
@@ -34,7 +37,7 @@ public class Box extends Modification {
 	}
 
 	@Override
-	public String update(String cmd, Map<Integer, ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs) {
+	public String update(String cmd) {
 		
 		// Location boxLoc = this.getLoc();
 		

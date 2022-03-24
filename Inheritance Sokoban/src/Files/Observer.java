@@ -10,6 +10,6 @@ import java.util.*;
  */
 public interface Observer {
 
-    public String update(String cmd, Map<Integer, ArrayList<Location>> locs, Map<Location, ArrayList<Modification>> modLocs);
+    public String update(String cmd);
 	
 }

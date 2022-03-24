@@ -12,10 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -39,16 +36,8 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	private static final String EXIT = "EXIT";
 	
 	private String filename;
-	private Map<Location, JLabel> levelMap;
+	private Map<Integer, JLabel> levelMap;
 	private Board board;
-	
-	/*
-	 * ================================================================
-	 *  Going to need to make a lists of things related to all objects 
-	 * ================================================================
-	 */
-	
-	private List<? extends Modification> objects;
 	
 	public Map<String, ImageIcon> imageIcons;	
 	
@@ -60,7 +49,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		this.board = new Board("level00.txt");
 		this.yourPath = path;
 		this.filename = "";
-		this.levelMap = new HashMap<>();
+		this.levelMap = new HashMap<Integer, JLabel>();
 		this.imageIcons = setImageIcons();
 		
 		
@@ -84,13 +73,6 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		this.drawAll();
-		// loop through all the objects and draw them all using generalized drawAny
-		/*
-		this.drawWalls();
-		this.drawStorage();
-		this.drawBoxes();
-		this.drawPlayer();
-		*/
 	}
 	
 	// sets all the image icons based on their names
@@ -99,25 +81,13 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		
 		FileGetter fg = new FileGetter();
 		
-		Set<String> modsList = fg.listFilesUsingDirectoryStream(this.yourPath + "Mods");
-		for (String currentMod : modsList) {
-			String modName = currentMod.substring(0, currentMod.length()-5); // gets rid of ".java"
-			if (!modName.equals("Modification")) {
-				ImageIcon img = createImageIcon(modName + ".png", modName);
-				theIcons.put(modName, img);
-			}
+		Set<String> iconsList = fg.listFilesUsingDirectoryStream(this.yourPath + "Icons");
+		for (String currentImg : iconsList) {
+			String modName = currentImg.substring(0, currentImg.length()-4); // gets rid of ".java"
+			ImageIcon img = new ImageIcon(this.yourPath + "Icons\\" + currentImg, modName);
+			theIcons.put(modName, img);
 		}
 		return theIcons;
-	}
-	
-	private final ImageIcon createImageIcon(String file, String description) {
-		java.net.URL imgURL = getClass().getResource(this.yourPath + "Icons\\" + file);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL, description);
-		} else {
-			System.err.println("Couldn't find file: " + this.yourPath + "Icons\\" + file);
-			return null;
-		}
 	}
 	
 	private final JMenuBar makeMenu() {
@@ -168,15 +138,15 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(height, width, 0, 0));
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				Location loc = new Location(x, y);
-				JLabel b = makeLabel("");
-				p.add(b);
-				this.levelMap.put(loc, b);
-			}
+
+		for (Integer coord : this.board.getLocs().keySet()){
+			JLabel b = makeLabel("");
+			p.add(b);
+			this.levelMap.put(coord, b);
 		}
+
 		return p;
+
 	}
 	
 	private JPanel makeButtonPanel() {
@@ -203,96 +173,24 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		p.add(makeLabel(""));
 		
 		return p;
-	}
-	
+	}	
 	
 	private void drawAll() {
-		for (int i = 0; i < this.objects.size(); i++) {
-			Location loc = this.objects.get(i).getLoc();
-			JLabel b = this.levelMap.get(loc);
-			String theName = objects.get(i).getClass().getSimpleName();
-			if (theName.equals("Box") || theName.equals("Storage")) {
-				// check if box on storage
-				ImageIcon img = this.imageIcons.get(theName);
-				b.setIcon(img);
-			} else {
-				ImageIcon img = this.imageIcons.get(theName);
-				b.setIcon(img);
-			}
-			
-			// be sure that this works for a box on a storage
-			// change this part to work not only for storage & boxes but for any "Floor type" object & boxes (also players?)
-			/*
-			if (the_name.equals("Box")) {
-				if (this.board.hasStorage(loc)) {
-					b.setIcon(this.boxAndStorageIcon);
-				}
-				else {
-					b.setIcon(this.boxIcon);
+
+		for (Integer coord : this.board.getLocs().keySet()){				// for each coord on board
+			this.levelMap.get(coord).setIcon(null);
+			ArrayList<Location> locs = this.board.getLocs().get(coord);		// get the Location objects at that coord
+			for (Location loc : locs){										// for each Location objects
+				ArrayList<Modification> mods = this.board.getModLocs().get(loc);	// get the mods at this Location
+				for (Modification mod : mods){								// for each mod at this location
+					JLabel b = this.levelMap.get(this.board.getWidth() * mod.getLoc().getY() + mod.getLoc().getX());
+					ImageIcon img = this.imageIcons.get(mod.img);
+					b.setIcon(img);
 				}
 			}
-			else if (the_name.equals("Storage")){
-				if (this.board.hasBox(loc)) {
-					b.setIcon(this.boxAndStorageIcon);
-				}
-				else {
-					b.setIcon(this.storageIcon);
-				}
-			}
-			else {
-				b.setIcon(this.wallIcon);	// somehow access the icon for the specific object type
-			}
-			*/
 		}
+
 	}
-	
-	/*
-	private void drawWalls() {
-		List<Wall> walls = this.board.getWalls();
-		for (Wall w : walls) {
-			Location loc = w.getLoc();
-			JLabel b = this.levelMap.get(loc);
-			b.setIcon(this.wallIcon);
-		}
-	}
-	
-	private void drawStorage() {
-		List<Storage> storage = this.board.getStorage();
-		for (Storage s : storage) {
-			Location loc = s.getLoc();
-			JLabel b = this.levelMap.get(loc);
-			if (this.board.hasBox(loc)) {
-				b.setIcon(this.boxAndStorageIcon);
-			}
-			else {
-				b.setIcon(this.storageIcon);
-			}
-			
-		}
-	}
-	
-	private void drawBoxes() {
-		List<Box> boxes = this.board.getBoxes();
-		for (Box box : boxes) {
-			Location loc = box.getLoc();
-			JLabel b = this.levelMap.get(loc);
-			if (this.board.hasStorage(loc)) {
-				b.setIcon(this.boxAndStorageIcon);
-			}
-			else {
-				b.setIcon(this.boxIcon);
-			}
-			
-		}
-	}
-	
-	private void drawPlayer() {
-		Location loc = this.board.getPlayer().location();
-		JLabel b = this.levelMap.get(loc);
-		b.setIcon(this.playerIcon);
-	}
-	*/
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -325,12 +223,10 @@ public class SokobanGUI extends JFrame implements ActionListener {
 			case EXIT:
 				this.dispose();
 				break;
-			default: 
+			default:
 				board.notifyObservers(cmd);
 		}
 
-		// update the locs
-		// this.board.updateLocs();
 		// redraw
 		this.drawAll();
 	}
