@@ -229,6 +229,9 @@ public class SokobanGUI extends JFrame implements ActionListener {
 
 		// redraw
 		this.drawAll();
+		if (this.board.isSolved()) {
+			JOptionPane.showMessageDialog(this, "You won!");
+		}
 	}
 	
 	public static void main(String[] args) throws IOException {
