@@ -23,19 +23,21 @@ public class Storage extends Modification {
 	@Override
 	public Modification makeCopy() {
 		
-		Storage storageObject = null;
+		Storage Object = null;
 		
 		try {
-			storageObject = (Storage) super.clone();
+			Object = (Storage) super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 		
-		return storageObject;
+		return Object;
 	}
 
 	@Override
 	public String update(String cmd) {
+
 		return null;
+
 	}
 }

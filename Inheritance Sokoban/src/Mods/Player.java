@@ -23,15 +23,15 @@ public class Player extends Modification {
 	@Override
 	public Modification makeCopy() {
 		
-		Player playerObject = null;
+		Player Object = null;
 		
 		try {
-			playerObject = (Player) super.clone();
+			Object = (Player) super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 		
-		return playerObject;
+		return Object;
 	}
 
 	@Override

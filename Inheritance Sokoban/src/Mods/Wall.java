@@ -22,15 +22,15 @@ public class Wall extends Modification {
 	@Override
 	public Modification makeCopy() {
 		
-		Wall wallObject = null;
+		Wall Object = null;
 		
 		try {
-			wallObject = (Wall) super.clone();
+			Object = (Wall) super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 		
-		return wallObject;
+		return Object;
 	}
 
 	@Override
