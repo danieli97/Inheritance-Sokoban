@@ -229,8 +229,16 @@ public class Board implements Subject {
 	
 	// checks if the current state of the board is solved
 	public boolean isSolved() {
-		// return true if all boxes are on storages, and return false if not	
+		for (Modification mod : this.mods) {
+			if (mod.letter.equals("B") && mod.img == "Box") {
+				
+				return false;
+				
+			}
+		}
+		
 		return true;
+		
 	}
 	
 	// checks if a given location is free
