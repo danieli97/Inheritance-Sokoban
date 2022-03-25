@@ -85,6 +85,9 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		for (String currentImg : iconsList) {
 			String modName = currentImg.substring(0, currentImg.length()-4); // gets rid of ".java"
 			ImageIcon img = new ImageIcon(this.yourPath + "Icons\\" + currentImg, modName);
+			Image image = img.getImage(); // transform it to Image so it can be scaled
+			Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // scale it to 50x50 pixels
+			img = new ImageIcon(newimg);  // transform it back to ImageIcon
 			theIcons.put(modName, img);
 		}
 		return theIcons;
