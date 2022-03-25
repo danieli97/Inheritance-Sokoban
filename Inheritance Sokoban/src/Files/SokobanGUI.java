@@ -1,6 +1,8 @@
 package Files;
 
 import Mods.*;
+
+import java,awt.Image;
 import java.awt.Color;
 import java.lang.*;
 import java.awt.Dimension;
@@ -22,7 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-// import javax.swing.JOptionPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class SokobanGUI extends JFrame implements ActionListener {
