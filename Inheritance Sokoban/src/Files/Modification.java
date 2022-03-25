@@ -42,6 +42,10 @@ public abstract class Modification implements Cloneable, Observer {
 		return Modification.board.getWidth() * y + x;
 	}
 
+	public boolean canBePushed(){
+		return this.canPush;
+	}
+
 	public static ArrayList<Modification> getModsAt(int coord){
 		ArrayList<Modification> mods = new ArrayList<Modification>();
 		for (Location loc : Modification.board.getLocs().get(coord)){

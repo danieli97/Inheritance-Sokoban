@@ -38,6 +38,37 @@ public class Box extends Modification {
 	}
 
 	@Override
+	public boolean canMove(String cmd){
+		int coord = 0;
+
+		if (cmd.equals("LEFT")){
+			coord = Modification.getCoord(this.loc.getX()-1, this.loc.getY());
+		}
+		else if (cmd.equals("RIGHT")){
+			coord = Modification.getCoord(this.loc.getX()+1, this.loc.getY());
+		}
+		else if (cmd.equals("UP")){
+			coord = Modification.getCoord(this.loc.getX(), this.loc.getY()-1);
+		}
+		else if (cmd.equals("DOWN")){
+			coord = Modification.getCoord(this.loc.getX(), this.loc.getY()+1);
+		}
+
+		for (Modification mod : Modification.getModsAt(coord)){	// for each mod at new position
+			if (!mod.isOnFloor()){				// if the mod is not on the floor
+				if (!mod.getLetter().equals("B") && mod.canBePushed()){				// if the mod is not on the floor but can be pushed
+					return mod.canMove(cmd);	// check if the mod can be moved with cmd
+				}
+				else {							// if mod is not on floor and cannot be moved (eg. wall)
+					return false;				// return false
+				}
+			}
+		}
+
+		return true;
+	}
+
+	@Override
 	public String update(String cmd) {
 
 		switch(cmd){
