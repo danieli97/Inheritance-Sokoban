@@ -1,8 +1,6 @@
 package Files;
 
-import Mods.*;
-
-import java,awt.Image;
+import java.awt.Image;
 import java.awt.Color;
 import java.lang.*;
 import java.awt.Dimension;

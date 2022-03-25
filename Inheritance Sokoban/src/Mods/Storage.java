@@ -16,6 +16,7 @@ public class Storage extends Modification {
 		this.onFloor = true;
 		this.letter = "S";
 		this.img = "Storage";
+		this.canPush = false;
 		
 	}
 	
@@ -36,8 +37,6 @@ public class Storage extends Modification {
 
 	@Override
 	public String update(String cmd) {
-
 		return null;
-
 	}
 }

@@ -230,7 +230,7 @@ public class Board implements Subject {
 	// checks if the current state of the board is solved
 	public boolean isSolved() {
 		for (Modification mod : this.mods) {
-			if (mod.letter.equals("B") && mod.img == "Box") {
+			if (mod.getLetter().equals("B") && mod.img == "Box") {
 				
 				return false;
 				

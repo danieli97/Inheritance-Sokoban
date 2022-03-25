@@ -15,6 +15,7 @@ public class Wall extends Modification {
 		this.onFloor = false;
 		this.letter = "W";
 		this.img = "Wall";
+		this.canPush = false;
 
 	}
 	
