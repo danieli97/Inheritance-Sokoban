@@ -11,5 +11,5 @@ import java.util.*;
 public interface Observer {
 
     public String update(String cmd);
-	
+
 }

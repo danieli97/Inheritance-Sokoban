@@ -4,13 +4,13 @@ import Files.*;
 
 // Wall class
 public class Wall extends Modification {
-	
+
 	// Attributes
 	// Inherited from Parent Modification Class
-	
+
 	// Constructor
 	public Wall(Location loc) {
-		
+
 		this.initLoc(loc);
 		this.onFloor = false;
 		this.letter = "W";
@@ -18,19 +18,19 @@ public class Wall extends Modification {
 		this.canPush = false;
 
 	}
-	
+
 	// Methods
 	@Override
 	public Modification makeCopy() {
-		
+
 		Wall Object = null;
-		
+
 		try {
 			Object = (Wall) super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-		
+
 		return Object;
 	}
 
@@ -38,5 +38,5 @@ public class Wall extends Modification {
 	public String update(String cmd) {
 		return null;
 	}
-	
+
 }
