@@ -1,7 +1,5 @@
 package Files;
 
-import Mods.*;
-
 // Location class
 public class Location implements Cloneable {
 

@@ -2,15 +2,15 @@ package Files;
 
 import java.util.ArrayList;
 
-public abstract class Modification implements Cloneable, Observer {
+public abstract class Modification implements Cloneable {
 
 	// Attributes
 	protected Location loc;
 	protected String letter;
 	protected boolean onFloor;
 	protected String img;
-	protected static Board board;
 	protected boolean canPush;
+	protected static Board board;
 
 	// Regular Methods
 	public Location getLoc() {

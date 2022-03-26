@@ -36,37 +36,28 @@ public class Player extends Modification {
 
 	@Override
 	public String update(String cmd) {
-		// can check the change in loc using the og location and Location object
-		// maybe this returns a cmd and null if none back to board which can recursively
-		// call notify with the cmd
-		// could return mod and cmd
-		// change to switch
 		switch (cmd) {
 			case "LEFT":
 				if (this.canMove(cmd)) {
-					Modification.board.changeLoc(this.getCoord(),
-							Modification.getCoord(this.loc.getX() - 1, this.loc.getY()), this.loc);
+					board.changeLoc(this.getCoord(), getCoord(this.loc.getX() - 1, this.loc.getY()), this.loc);
 					this.loc.setX(this.loc.getX() - 1);
 					return "PLEFT";
 				}
 			case "RIGHT":
 				if (this.canMove(cmd)) {
-					Modification.board.changeLoc(this.getCoord(),
-							Modification.getCoord(this.loc.getX() + 1, this.loc.getY()), this.loc);
+					board.changeLoc(this.getCoord(), getCoord(this.loc.getX() + 1, this.loc.getY()), this.loc);
 					this.loc.setX(this.loc.getX() + 1);
 					return "PRIGHT";
 				}
 			case "UP":
 				if (this.canMove(cmd)) {
-					Modification.board.changeLoc(this.getCoord(),
-							Modification.getCoord(this.loc.getX(), this.loc.getY() - 1), this.loc);
+					board.changeLoc(this.getCoord(), getCoord(this.loc.getX(), this.loc.getY() - 1), this.loc);
 					this.loc.setY(this.loc.getY() - 1);
 					return "PUP";
 				}
 			case "DOWN":
 				if (this.canMove(cmd)) {
-					Modification.board.changeLoc(this.getCoord(),
-							Modification.getCoord(this.loc.getX(), this.loc.getY() + 1), this.loc);
+					board.changeLoc(this.getCoord(), getCoord(this.loc.getX(), this.loc.getY() + 1), this.loc);
 					this.loc.setY(this.loc.getY() + 1);
 					return "PDOWN";
 				}

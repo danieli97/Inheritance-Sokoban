@@ -2,7 +2,6 @@ package Files;
 
 import java.awt.Image;
 import java.awt.Color;
-import java.lang.*;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -27,6 +26,8 @@ import javax.swing.JPanel;
 
 public class SokobanGUI extends JFrame implements ActionListener {
 
+	// ATTRIBUTES
+	// STATIC ATTRIBUTES
 	private static final String LEFT = "LEFT";
 	private static final String RIGHT = "RIGHT";
 	private static final String UP = "UP";
@@ -34,20 +35,17 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	private static final String RELOAD = "RELOAD";
 	private static final String LOAD = "LOAD";
 	private static final String EXIT = "EXIT";
-
-	private String filename;
+	private static final String YOURPATH = "C:\\Users\\brian\\OneDrive\\Desktop\\UNI 1\\Year 4\\W2022\\CISC 499\\Inheritance-Sokoban\\Inheritance Sokoban\\src\\";
+	// ATTRIBUTES
 	private Map<Integer, JLabel> levelMap;
+	private Map<String, ImageIcon> imageIcons;
 	private Board board;
+	private String filename;
 
-	public Map<String, ImageIcon> imageIcons;
-
-	public String yourPath;
-
-	public SokobanGUI(String path) throws IOException {
+	public SokobanGUI() throws IOException {
 
 		super("Sokoban");
 		this.board = new Board("level00.txt");
-		this.yourPath = path;
 		this.filename = "";
 		this.levelMap = new HashMap<Integer, JLabel>();
 		this.imageIcons = setImageIcons();
@@ -79,10 +77,10 @@ public class SokobanGUI extends JFrame implements ActionListener {
 
 		FileGetter fg = new FileGetter();
 
-		Set<String> iconsList = fg.listFilesUsingDirectoryStream(this.yourPath + "Icons");
+		Set<String> iconsList = fg.listFilesUsingDirectoryStream(YOURPATH + "Icons");
 		for (String currentImg : iconsList) {
 			String modName = currentImg.substring(0, currentImg.length() - 4); // gets rid of ".java"
-			ImageIcon img = new ImageIcon(this.yourPath + "Icons\\" + currentImg, modName);
+			ImageIcon img = new ImageIcon(YOURPATH + "Icons\\" + currentImg, modName);
 			Image image = img.getImage(); // transform it to Image so it can be scaled
 			Image newimg = image.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH); // scale it to 50x50 pixels
 			img = new ImageIcon(newimg); // transform it back to ImageIcon
@@ -237,9 +235,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 
 	public static void main(String[] args) throws IOException {
 
-		String yourPath = "C:\\Users\\brian\\OneDrive\\Desktop\\UNI 1\\Year 4\\W2022\\CISC 499\\Inheritance-Sokoban\\Inheritance Sokoban\\src\\";
-
-		SokobanGUI gui = new SokobanGUI(yourPath);
+		SokobanGUI gui = new SokobanGUI();
 		gui.setVisible(true);
 
 	}
