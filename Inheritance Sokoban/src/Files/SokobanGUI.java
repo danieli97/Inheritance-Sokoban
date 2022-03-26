@@ -9,8 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -71,13 +76,23 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		this.drawAll();
 	}
 
+	private Set<String> listFilesUsingDirectoryStream(String dir) throws IOException {
+		Set<String> fileList = new HashSet<>();
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dir))) {
+			for (Path path : stream) {
+				if (!Files.isDirectory(path)) {
+					fileList.add(path.getFileName().toString());
+				}
+			}
+		}
+		return fileList;
+	}
+
 	// sets all the image icons based on their names
 	private final Map<String, ImageIcon> setImageIcons() throws IOException {
 		Map<String, ImageIcon> theIcons = new HashMap<>();
 
-		FileGetter fg = new FileGetter();
-
-		Set<String> iconsList = fg.listFilesUsingDirectoryStream(YOURPATH + "Icons");
+		Set<String> iconsList = listFilesUsingDirectoryStream(YOURPATH + "Icons");
 		for (String currentImg : iconsList) {
 			String modName = currentImg.substring(0, currentImg.length() - 4); // gets rid of ".java"
 			ImageIcon img = new ImageIcon(YOURPATH + "Icons\\" + currentImg, modName);
