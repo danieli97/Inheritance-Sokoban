@@ -37,8 +37,8 @@ public abstract class Modification implements Cloneable {
 		*/
 		ArrayList<Modification> mods = new ArrayList<Modification>(); 	// ArrayList of Modifications called mods
 		for (Location loc : board.getLocs().get(coord)) {				// for each Location object found on the 
-																		// board locations Map at coordinate
-			mods.addAll(Modification.board.getModLocs().get(loc));		// add all Modifications for each Location to mods
+																		// board at coordinate
+			mods.add(Modification.board.getModLocs().get(loc));			// add Modification for Location to mods
 		}
 		return mods;
 	}

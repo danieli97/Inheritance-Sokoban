@@ -45,22 +45,20 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	private static final String YOURPATH = "C:\\Users\\brian\\OneDrive\\Desktop\\UNI 1\\Year 4\\W2022\\CISC 499\\Inheritance-Sokoban\\Inheritance Sokoban\\src\\";
 
 	// Variable
-	private Map<Integer, JLabel> levelMap;
-	private Map<String, ImageIcon> imageIcons;
-	private Board board;
-	private String filename;
+	private Map<Integer, JLabel> levelMap;		// Map coordinate to label at that coordinate
+	private Map<String, ImageIcon> imageIcons;	// Map Modification letter to associated image icon
+	private Board board;						// current Board
+	private String filename;					// name of level file
 
 	// Constructor
 	public SokobanGUI() throws IOException {
-
 		super("Sokoban");
 		this.filename = "level00.txt";
-		this.board = new Board(this.filename);
 		this.levelMap = new HashMap<Integer, JLabel>();
+
+		this.board = new Board(this.filename);
 		this.imageIcons = setImageIcons();
-
 		this.setJMenuBar(this.makeMenu());
-
 		this.initLevel();
 	}
 
@@ -155,7 +153,6 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	}
 
 	private JPanel makeLevelPanel() {
-
 		int width = this.board.getWidth();
 		int height = this.board.getHeight();
 
@@ -169,7 +166,6 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		}
 
 		return p;
-
 	}
 
 	private JPanel makeButtonPanel() {
@@ -200,26 +196,21 @@ public class SokobanGUI extends JFrame implements ActionListener {
 
 	// Functions
 	private void drawAll() {
-
-		for (Integer coord : this.board.getLocs().keySet()) { // for each coord on board
+		for (Integer coord : this.board.getLocs().keySet()) { 			// for each coord on board
 			this.levelMap.get(coord).setIcon(null);
 			ArrayList<Location> locs = this.board.getLocs().get(coord); // get the Location objects at that coord
-			for (Location loc : locs) { // for each Location objects
-				ArrayList<Modification> mods = this.board.getModLocs().get(loc); // get the mods at this Location
-				for (Modification mod : mods) { // for each mod at this location
-					JLabel b = this.levelMap.get(this.board.getWidth() * mod.getLoc().getY() + mod.getLoc().getX());
-					ImageIcon img = this.imageIcons.get(mod.img);
-					b.setIcon(img);
-				}
+			for (Location loc : locs) { 								// for each Location objects
+				Modification mod = this.board.getModLocs().get(loc); 	// get the mod for this Location
+				JLabel b = this.levelMap.get(this.board.getWidth() * mod.getLoc().getY() + mod.getLoc().getX());
+				ImageIcon img = this.imageIcons.get(mod.img);
+				b.setIcon(img);
 			}
 		}
-
 	}
 
 	// Overrides
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		String cmd = e.getActionCommand();
 
 		switch (cmd) {
@@ -261,10 +252,8 @@ public class SokobanGUI extends JFrame implements ActionListener {
 
 	// Main
 	public static void main(String[] args) throws IOException {
-
 		SokobanGUI gui = new SokobanGUI();
 		gui.setVisible(true);
-
 	}
 
 }

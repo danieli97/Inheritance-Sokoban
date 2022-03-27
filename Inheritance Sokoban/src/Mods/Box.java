@@ -54,13 +54,13 @@ public class Box extends Modification {
 			coord = getCoord(this.loc.getX(), this.loc.getY() + 1);
 		}
 
-		for (Modification mod : getModsAt(coord)) { // for each mod at new position
-			if (!mod.isOnFloor()) { // if the mod is not on the floor
-				if (!mod.getLetter().equals("B") && mod.canBePushed()) { // if the mod is not on the floor but can be
-																			// pushed
-					return mod.canMove(cmd); // check if the mod can be moved with cmd
-				} else { // if mod is not on floor and cannot be moved (eg. wall)
-					return false; // return false
+		for (Modification mod : getModsAt(coord)) {
+			if (!mod.isOnFloor()) {
+				// only changed line:
+				if (!mod.getLetter().equals("B") && mod.canBePushed()) {	// one box cannot be pushed into another
+					return mod.canMove(cmd);
+				} else {
+					return false;
 				}
 			}
 		}

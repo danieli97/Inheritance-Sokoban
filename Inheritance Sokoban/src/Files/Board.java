@@ -12,51 +12,57 @@ import java.util.*;
 public class Board {
 
 	// Attributes
-	private Map<Integer, ArrayList<Location>> locs; // get location object from coordinate
-	private Map<Location, ArrayList<Modification>> modLocs; // get mod from location object
-	private ArrayList<Modification> mods; // list of mods
-	private int width;
-	private int height;
+	private Map<Integer, ArrayList<Location>> locs;			// Map coordinate to list of Locations at that coordinate
+	private Map<Location, Modification> modLocs; 			// Map Location object to Modification
+															// with that Location object
+	private ArrayList<Modification> mods; 					// array list of mods
+	private int width;										// width of the board
+	private int height;										// height of the board
 
 	// Constructor
 	public Board(String fileName) {
+		// check level file name
 		if (fileName == null) {
 			fileName = "level00.txt";
 		}
 
+		// instantiate data structures
 		this.mods = new ArrayList<Modification>();
 		this.locs = new HashMap<Integer, ArrayList<Location>>();
-		this.modLocs = new HashMap<Location, ArrayList<Modification>>();
+		this.modLocs = new HashMap<Location, Modification>();
 
+		// Cloning
+
+		// instantiate data structures and temporary Modifications to clone
 		Map<String, Modification> clonables = new HashMap<String, Modification>();
 		ArrayList<Modification> cloneTemplates = new ArrayList<Modification>();
-		Location tempLoc = new Location(-1, -1);
+		Location tempLoc = new Location(-1, -1);	// placeholder Location for each mod
+		Player.board = this;						// set static Modification value for board to this board
 
-		Player.board = this;
+		// initialize a single instance of each modification to be copied
 		cloneTemplates.add(new Box(tempLoc));
 		cloneTemplates.add(new Player(tempLoc));
 		cloneTemplates.add(new Wall(tempLoc));
 		cloneTemplates.add(new Storage(tempLoc));
-		// cloneTemplates.add(new {YOUR MOD NAME}(tempLoc));
+		// cloneTemplates.add(new {YOUR_MOD_NAME}(tempLoc));
 
+		// map each Modification letter to their respective instance
 		for (Modification mod : cloneTemplates) {
 			clonables.put(mod.letter, mod);
 		}
 
 		// create modifications
 		try {
-			ArrayList<String[]> levelArray = getLevelArray(fileName); // get level array
-			this.generateClones(levelArray, clonables);
+			ArrayList<String[]> levelArray = getLevelArray(fileName); 	// get level array
+			this.generateClones(levelArray, clonables);					// generate clones
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Error loading level");
 			e.printStackTrace();
 		}
-
 	}
 
 	// Methods
-	
+
 	// Getters
 	public ArrayList<Modification> getMods() {
 		return this.mods;
@@ -66,7 +72,7 @@ public class Board {
 		return this.locs;
 	}
 
-	public Map<Location, ArrayList<Modification>> getModLocs() {
+	public Map<Location, Modification> getModLocs() {
 		return this.modLocs;
 	}
 
@@ -84,64 +90,52 @@ public class Board {
 		given a level file name, method reads through the file and extracts relevant
 		information
 		*/
+		URL fileURL = Board.class.getClassLoader().getResource("Levels//" + fileName);			// get fileURL using level file name
 
-		URL fileURL = Board.class.getClassLoader().getResource("Levels//" + fileName);
+		BufferedReader read = new BufferedReader(new InputStreamReader(fileURL.openStream()));	// open buffer reader for file
 
-		BufferedReader read = new BufferedReader(new InputStreamReader(fileURL.openStream()));
+		ArrayList<String[]> levelArray = new ArrayList<String[]>();	// 2d array holding each character in level at coordinate
+		ArrayList<String> lines = new ArrayList<String>(); 
 		String line;
 
-		int heightCount = 0;
-		int widthCount = 0;
-		ArrayList<String[]> levelArray = new ArrayList<String[]>();
-
-		while ((line = read.readLine()) != null) {
-			if (line.length() > widthCount) {
-				widthCount = line.length();
+		this.width = 0;		// initialize width
+		this.height = 0;	// initialize height
+		while ((line = read.readLine()) != null) {	// for each line in the level
+			if (line.length() > this.width) {		// if length of line is longer than the longest length found
+				this.width = line.length();
 			}
-			heightCount++;
-			levelArray.add(line.split("(?!^)"));
+			this.height++;							// increase height count
+			lines.add(line);						// add line to list of lines
 		}
-		read.close();
+		read.close();		// close file
 
-		this.width = widthCount;
-		this.height = heightCount;
-
-		for (int i = 0; i < levelArray.size(); i++) {
-			if (levelArray.get(i).length < widthCount) {
-				String[] newLine = new String[widthCount];
-				for (int j = 0; j < levelArray.get(i).length; j++) {
-					newLine[j] = levelArray.get(i)[j];
-				}
-				for (int k = levelArray.get(i).length; k < widthCount; k++) {
-					newLine[k] = " ";
-				}
-				levelArray.set(i, newLine);
-			}
+		for (String l : lines){									// for each line
+			l = String.format("%1$-" + this.width + "s", l);	// pad right side up to board width with spaces
+			levelArray.add(l.split(""));						// split line into array of single character strings and add to levelArray
 		}
 
 		return levelArray;
-
 	}
 
 	private void generateClones(ArrayList<String[]> levelArray, Map<String, Modification> clonables) {
-		for (int y = levelArray.size() - 1; y >= 0; y--) {
+		/*
+		take level array and clonable modifications and generate respective clone at each location in level array
+		*/
+
+		for (int y = levelArray.size() - 1; y >= 0; y--) {									// for each x,y coordinate in the level (bottom left is 0,0)
 			for (int x = 0; x < levelArray.get(y).length; x++) {
-				this.locs.put(this.width * y + x, new ArrayList<Location>());
-				if (clonables.get(levelArray.get(y)[x]) != null) {
+				this.locs.put(Modification.getCoord(x, y), new ArrayList<Location>());		// Map coordinate value to new array list
+				if (clonables.get(levelArray.get(y)[x]) != null) {							// get letter from level array and check for clonable mod
 					// create clone
-					Location curLoc = new Location(x, y); // create Location instance at current location
-					Modification newMod = clonables.get(levelArray.get(y)[x]).makeCopy(); // create copy of mod with
-																							// letter found
-					newMod.initLoc(curLoc); // initialize location with instance of Location
+					Location curLoc = new Location(x, y); 									// create Location instance at current location
+					Modification newMod = clonables.get(levelArray.get(y)[x]).makeCopy(); 	// create copy of mod with
+					newMod.initLoc(curLoc); 												// initialize mod location with instance of Location
 					// add values to data
-					this.mods.add(newMod); // add mod to list of mods
-					ArrayList<Modification> curLocMods = new ArrayList<Modification>(); // create arrayList of
-																						// Modifications
-					curLocMods.add(newMod); // add mod to arraylist
-					this.modLocs.put(curLoc, curLocMods); // put Location and respective list of mod in modLocs
-					this.locs.get(this.width * y + x).add(curLoc); // put current coordiate and new Location
+					this.mods.add(newMod); 													// add mod to list of mods
+					this.modLocs.put(curLoc, newMod); 										// map Location to list of mods
+					this.locs.get(this.width * y + x).add(curLoc); 							// put current coordiate and new Location
 				} else if (!levelArray.get(y)[x].equals(" ")) {
-					// char in levelArray was not found in the modifications
+					// letter in levelArray was not found in the modifications
 					System.out.println("Could not resolve symbol: \"" + levelArray.get(y)[x] + "\" to a modification");
 				}
 			}
@@ -165,9 +159,7 @@ public class Board {
 		*/
 		for (Modification mod : this.mods) {
 			if (mod.img == "Box") {
-
 				return false;
-
 			}
 		}
 		return true;
