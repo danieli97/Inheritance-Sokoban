@@ -5,58 +5,97 @@ import java.util.ArrayList;
 public abstract class Modification implements Cloneable {
 
 	// Attributes
-	protected Location loc;
-	protected String letter;
-	protected boolean onFloor;
-	protected String img;
-	protected boolean canPush;
-	protected static Board board;
+	protected Location loc;			// Location object for this Modification
+	protected String letter;		// Letter associated with this Modification on level map
+	protected boolean onFloor;		// true if object may be moved on top of
+	protected String img;			// name of file containing icon for this Modification
+	protected boolean canPush;		// true if the object can be pushed
+	protected static Board board;	// holds current board (static = shared between all Modifications)
 
-	// Regular Methods
+	// Methods
+	
+	// Static
+	public static int getCoord(int x, int y) {
+		/*
+		calculate and return coordinate for a given x and y value
+		eg. 
+		for board:
+			WWW
+			WWW
+			WWW
+		coordinates are as follows:
+			678
+			345
+			012
+		*/
+		return Modification.board.getWidth() * y + x;
+	}
+	
+	public static ArrayList<Modification> getModsAt(int coord) {
+		/*
+		given a coordinate, return a list of Modifications found at that coordinate
+		*/
+		ArrayList<Modification> mods = new ArrayList<Modification>(); 	// ArrayList of Modifications called mods
+		for (Location loc : board.getLocs().get(coord)) {				// for each Location object found on the 
+																		// board locations Map at coordinate
+			mods.addAll(Modification.board.getModLocs().get(loc));		// add all Modifications for each Location to mods
+		}
+		return mods;
+	}
+
+	// Getters
 	public Location getLoc() {
 		return this.loc;
-	}
-
-	public void initLoc(Location loc) {
-		this.loc = loc;
-	}
-
-	public void setLoc(int x, int y) {
-		this.loc.setX(x);
-		this.loc.setY(y);
 	}
 
 	public String getLetter() {
 		return this.letter;
 	}
 
+	public int getCoord() {
+		// return getCoord for this Modification
+		return getCoord(this.loc.getX(), this.loc.getY());
+	}
+
 	public boolean isOnFloor() {
 		return this.onFloor;
-	}
-
-	public int getCoord() {
-		return Modification.board.getWidth() * this.loc.getY() + this.loc.getX();
-	}
-
-	public static int getCoord(int x, int y) {
-		return Modification.board.getWidth() * y + x;
 	}
 
 	public boolean canBePushed() {
 		return this.canPush;
 	}
 
-	public static ArrayList<Modification> getModsAt(int coord) {
-		ArrayList<Modification> mods = new ArrayList<Modification>();
-		for (Location loc : Modification.board.getLocs().get(coord)) {
-			mods.addAll(Modification.board.getModLocs().get(loc));
-		}
-		return mods;
+	// Setters
+	public void initLoc(Location loc) {
+		/*
+		sets Location Object to parameter Object 
+		*/
+		this.loc = loc;
 	}
 
-	public boolean canMove(String cmd) {
-		int coord = 0;
+	public void setLoc(int x, int y) {
+		/*
+		sets values x and y in Location object 
+		with parameter x and y respectively
+		*/
+		this.loc.setX(x);
+		this.loc.setY(y);
+	}
 
+	// Functions
+	public boolean canMove(String cmd) {
+		/*
+		check if this object can move according to the command given
+		get coordinate that command will move this mod to
+		for each modification found at that coordinate 
+		find if the modification can be moved onto or 
+		can also be moved in the same direction
+		return true if the current mod can move
+		return false if the mod cannot move
+		*/
+
+		// get coordinate that the mod will be moved to
+		int coord = 0;
 		if (cmd.equals("LEFT")) {
 			coord = Modification.getCoord(this.loc.getX() - 1, this.loc.getY());
 		} else if (cmd.equals("RIGHT")) {
@@ -67,22 +106,22 @@ public abstract class Modification implements Cloneable {
 			coord = Modification.getCoord(this.loc.getX(), this.loc.getY() + 1);
 		}
 
-		for (Modification mod : Modification.getModsAt(coord)) { // for each mod at new position
-			if (!mod.isOnFloor()) { // if the mod is not on the floor
-				if (mod.canPush) { // if the mod is not on the floor but can be pushed
-					return mod.canMove(cmd); // check if the mod can be moved with cmd
-				} else { // if mod is not on floor and cannot be moved (eg. wall)
-					return false; // return false
+		for (Modification mod : Modification.getModsAt(coord)) { 	// for each mod at new position
+			if (!mod.isOnFloor()) { 								// if the mod is not on the floor
+				if (mod.canPush) { 									// if the mod is not on the floor but can be pushed
+					return mod.canMove(cmd); 						// check if the mod can be moved with cmd
+				} else { 											// if mod is not on floor and cannot be moved (eg. wall)
+					return false; 									// return false
 				}
 			}
 		}
 
-		return true;
+		return true;	// return true if no mods have returned false
 	}
 
 	// Abstract Methods
-	public abstract Modification makeCopy();
+	public abstract Modification makeCopy();	// return a copy of this Object
 
-	public abstract String update(String cmd);
+	public abstract String update(String cmd);	// for some command perform some update
 
 }

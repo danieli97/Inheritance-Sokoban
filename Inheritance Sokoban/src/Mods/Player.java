@@ -20,6 +20,8 @@ public class Player extends Modification {
 	}
 
 	// Methods
+
+	// Overrides
 	@Override
 	public Modification makeCopy() {
 

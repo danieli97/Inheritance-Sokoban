@@ -31,8 +31,9 @@ import javax.swing.JPanel;
 
 public class SokobanGUI extends JFrame implements ActionListener {
 
-	// ATTRIBUTES
-	// STATIC ATTRIBUTES
+	// Attributes
+
+	// Static
 	private static final String LEFT = "LEFT";
 	private static final String RIGHT = "RIGHT";
 	private static final String UP = "UP";
@@ -40,18 +41,21 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	private static final String RELOAD = "RELOAD";
 	private static final String LOAD = "LOAD";
 	private static final String EXIT = "EXIT";
+	// ADD YOUR FILE PATH ENDING IN "src\\"
 	private static final String YOURPATH = "C:\\Users\\brian\\OneDrive\\Desktop\\UNI 1\\Year 4\\W2022\\CISC 499\\Inheritance-Sokoban\\Inheritance Sokoban\\src\\";
-	// ATTRIBUTES
+
+	// Variable
 	private Map<Integer, JLabel> levelMap;
 	private Map<String, ImageIcon> imageIcons;
 	private Board board;
 	private String filename;
 
+	// Constructor
 	public SokobanGUI() throws IOException {
 
 		super("Sokoban");
-		this.board = new Board("level00.txt");
-		this.filename = "";
+		this.filename = "level00.txt";
+		this.board = new Board(this.filename);
 		this.levelMap = new HashMap<Integer, JLabel>();
 		this.imageIcons = setImageIcons();
 
@@ -60,6 +64,9 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		this.initLevel();
 	}
 
+	// Methods
+
+	// Setup
 	private final void initLevel() {
 		String title = "Sokoban";
 		if (!this.filename.isEmpty()) {
@@ -88,8 +95,10 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		return fileList;
 	}
 
-	// sets all the image icons based on their names
 	private final Map<String, ImageIcon> setImageIcons() throws IOException {
+		/*
+		sets all the image icons based on their names
+		*/
 		Map<String, ImageIcon> theIcons = new HashMap<>();
 
 		Set<String> iconsList = listFilesUsingDirectoryStream(YOURPATH + "Icons");
@@ -189,6 +198,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		return p;
 	}
 
+	// Functions
 	private void drawAll() {
 
 		for (Integer coord : this.board.getLocs().keySet()) { // for each coord on board
@@ -206,6 +216,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 
 	}
 
+	// Overrides
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -248,6 +259,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		}
 	}
 
+	// Main
 	public static void main(String[] args) throws IOException {
 
 		SokobanGUI gui = new SokobanGUI();

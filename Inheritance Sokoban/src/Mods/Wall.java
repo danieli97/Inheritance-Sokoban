@@ -20,6 +20,8 @@ public class Wall extends Modification {
 	}
 
 	// Methods
+
+	// Overrides
 	@Override
 	public Modification makeCopy() {
 

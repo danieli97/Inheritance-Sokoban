@@ -20,6 +20,8 @@ public class Storage extends Modification {
 	}
 
 	// Methods
+
+	// Overrides
 	@Override
 	public Modification makeCopy() {
 

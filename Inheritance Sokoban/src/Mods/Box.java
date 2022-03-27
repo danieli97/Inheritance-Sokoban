@@ -8,8 +8,9 @@ public class Box extends Modification {
 	// Attributes
 	// Inherited from Parent Modification Class
 
-	private final String DEFAULT_BOX = "Box";
-	private final String STORAGE_BOX = "box_on_storage";
+	// Static
+	private static final String DEFAULT_BOX = "Box";
+	private static final String STORAGE_BOX = "box_on_storage";
 
 	// Constructor
 	public Box(Location loc) {
@@ -23,6 +24,8 @@ public class Box extends Modification {
 	}
 
 	// Methods
+
+	// Overrides
 	@Override
 	public Modification makeCopy() {
 
