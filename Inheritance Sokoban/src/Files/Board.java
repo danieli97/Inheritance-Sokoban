@@ -35,7 +35,7 @@ public class Board {
 
 		// instantiate data structures and temporary Modifications to clone
 		Map<String, Modification> clonables = new HashMap<String, Modification>();
-		ArrayList<Modification> cloneTemplates = new ArrayList<Modification>();
+		LinkedList<Modification> cloneTemplates = new LinkedList<Modification>();
 		Location tempLoc = new Location(-1, -1);	// placeholder Location for each mod
 		Player.board = this;						// set static Modification value for board to this board
 
@@ -95,7 +95,7 @@ public class Board {
 		BufferedReader read = new BufferedReader(new InputStreamReader(fileURL.openStream()));	// open buffer reader for file
 
 		ArrayList<String[]> levelArray = new ArrayList<String[]>();	// 2d array holding each character in level at coordinate
-		ArrayList<String> lines = new ArrayList<String>(); 
+		LinkedList<String> lines = new LinkedList<String>(); 
 		String line;
 
 		this.width = 0;		// initialize width
