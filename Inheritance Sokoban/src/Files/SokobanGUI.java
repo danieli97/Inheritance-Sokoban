@@ -41,9 +41,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	private static final String RELOAD = "RELOAD";
 	private static final String LOAD = "LOAD";
 	private static final String EXIT = "EXIT";
-	// ADD YOUR FILE PATH ENDING IN "src\\"
-	private static final String YOURPATH = "C:\\Users\\brian\\OneDrive\\Desktop\\UNI 1\\Year 4\\W2022\\CISC 499\\Inheritance-Sokoban\\Inheritance Sokoban\\src\\";
-
+	private static String yourpath;
 	// Variable
 	private Map<Integer, JLabel> levelMap;		// Map coordinate to label at that coordinate
 	private Map<String, ImageIcon> imageIcons;	// Map Modification letter to associated image icon
@@ -52,10 +50,15 @@ public class SokobanGUI extends JFrame implements ActionListener {
 
 	// Constructor
 	public SokobanGUI() throws IOException {
+		// initialize
 		super("Sokoban");
 		this.filename = "level00.txt";
 		this.levelMap = new HashMap<Integer, JLabel>();
-
+		// get path
+		Path path = Paths.get("Files\\SokobanGUI.java");
+		path = path.toAbsolutePath().getParent().getParent();
+		SokobanGUI.yourpath = path.toString() + "\\";
+		// setup board
 		this.board = new Board(this.filename);
 		this.imageIcons = setImageIcons();
 		this.setJMenuBar(this.makeMenu());
@@ -99,10 +102,10 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		*/
 		Map<String, ImageIcon> theIcons = new HashMap<>();
 
-		Set<String> iconsList = listFilesUsingDirectoryStream(YOURPATH + "Icons");
+		Set<String> iconsList = listFilesUsingDirectoryStream(yourpath + "Icons");
 		for (String currentImg : iconsList) {
 			String modName = currentImg.substring(0, currentImg.length() - 4); // gets rid of ".java"
-			ImageIcon img = new ImageIcon(YOURPATH + "Icons\\" + currentImg, modName);
+			ImageIcon img = new ImageIcon(yourpath + "Icons\\" + currentImg, modName);
 			Image image = img.getImage(); // transform it to Image so it can be scaled
 			Image newimg = image.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH); // scale it to 50x50 pixels
 			img = new ImageIcon(newimg); // transform it back to ImageIcon
