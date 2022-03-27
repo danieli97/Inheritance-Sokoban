@@ -86,10 +86,6 @@ public abstract class Modification implements Cloneable {
 	public boolean canMove(String cmd) {
 		/*
 		check if this object can move according to the command given
-		get coordinate that command will move this mod to
-		for each modification found at that coordinate 
-		find if the modification can be moved onto or 
-		can also be moved in the same direction
 		return true if the current mod can move
 		return false if the mod cannot move
 		*/
