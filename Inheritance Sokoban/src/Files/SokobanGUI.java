@@ -1,5 +1,7 @@
 package Files;
 
+import Mods.Modifications;
+
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -46,6 +48,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	private Map<String, ImageIcon> imageIcons;	// Map Modification letter to associated image icon
 	private Board board;						// current Board
 	private String filename;					// name of level file
+	private Map<String, Modification> clonables;
 
 	// Constructor
 	public SokobanGUI() throws IOException {
@@ -58,8 +61,8 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		path = path.toAbsolutePath().getParent().getParent();
 		SokobanGUI.yourpath = path.toString() + "\\";
 		// setup board
-		// Modification.getClonables();
-		this.board = new Board(this.filename);
+		this.clonables = Modifications.getClonables();
+		this.board = new Board(this.filename, this.clonables);
 		this.imageIcons = setImageIcons();
 		this.setJMenuBar(this.makeMenu());
 		this.initLevel();
@@ -219,10 +222,10 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		switch (cmd) {
 			case RELOAD:
 				if (this.filename.isEmpty()) { // maybe dont need this if default will pass null
-					this.board = new Board(null);
+					this.board = new Board(null, this.clonables);
 					this.initLevel();
 				} else {
-					this.board = new Board(this.filename);
+					this.board = new Board(this.filename, this.clonables);
 					this.initLevel();
 				}
 				break;
@@ -232,7 +235,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 				int returnVal = fc.showOpenDialog(this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
-					this.board = new Board(file.getName());
+					this.board = new Board(file.getName(), this.clonables);
 					this.filename = file.getName();
 					this.initLevel();
 				}

@@ -21,37 +21,18 @@ public class Board {
 	private boolean isWon;									// true if game has been won
 
 	// Constructor
-	public Board(String fileName) {
+	public Board(String fileName, Map<String, Modification> clonables) {
 		// check level file name
 		if (fileName == null) {
 			fileName = "level00.txt";
 		}
+		
+		// instantiate
 		this.isWon = false;
-
-		// instantiate data structures
 		this.mods = new ArrayList<Modification>();
 		this.locs = new HashMap<Integer, ArrayList<Location>>();
 		this.modLocs = new HashMap<Location, Modification>();
-
-		// Cloning
-
-		// instantiate data structures and temporary Modifications to clone
-		Map<String, Modification> clonables = new HashMap<String, Modification>();
-		LinkedList<Modification> cloneTemplates = new LinkedList<Modification>();
-		Location tempLoc = new Location(-1, -1);	// placeholder Location for each mod
-		Player.board = this;						// set static Modification value for board to this board
-
-		// initialize a single instance of each modification to be copied
-		cloneTemplates.add(new Box(tempLoc));
-		cloneTemplates.add(new Player(tempLoc));
-		cloneTemplates.add(new Wall(tempLoc));
-		cloneTemplates.add(new Storage(tempLoc));
-		// cloneTemplates.add(new YOUR_MOD_NAME(tempLoc));
-
-		// map each Modification letter to their respective instance
-		for (Modification mod : cloneTemplates) {
-			clonables.put(mod.letter, mod);
-		}
+		Player.board = this;	// set static Modification value for board to this board
 
 		// create modifications
 		try {
