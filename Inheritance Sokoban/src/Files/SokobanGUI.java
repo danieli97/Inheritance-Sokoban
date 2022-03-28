@@ -227,10 +227,8 @@ public class SokobanGUI extends JFrame implements ActionListener {
 				}
 				break;
 			case LOAD:
-				Path path = FileSystems.getDefault().getPath("src", "sokoban"); // will probably need to change this
-																				// line
 				final JFileChooser fc = new JFileChooser();
-				fc.setCurrentDirectory(path.toFile());
+				fc.setCurrentDirectory(new File(yourpath + "\\Levels"));
 				int returnVal = fc.showOpenDialog(this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
