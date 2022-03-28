@@ -9,7 +9,8 @@ public abstract class Modification implements Cloneable {
 	protected String letter;		// Letter associated with this Modification on level map
 	protected boolean onFloor;		// true if object may be moved on top of
 	protected String img;			// name of file containing icon for this Modification
-	protected boolean canPush;		// true if the object can be pushed
+	protected boolean canPush;		// true if the object can be pushed\
+	protected String tag; 			// 
 	protected static Board board;	// holds current board (static = shared between all Modifications)
 
 	// Methods
@@ -44,6 +45,10 @@ public abstract class Modification implements Cloneable {
 	}
 
 	// Getters
+	public String getTag() {
+		return this.tag;
+	}
+	
 	public Location getLoc() {
 		return this.loc;
 	}
@@ -63,6 +68,10 @@ public abstract class Modification implements Cloneable {
 
 	public boolean canBePushed() {
 		return this.canPush;
+	}
+
+	public boolean isBoxStored(){
+		return false;
 	}
 
 	// Setters
@@ -100,6 +109,9 @@ public abstract class Modification implements Cloneable {
 			coord = Modification.getCoord(this.loc.getX(), this.loc.getY() - 1);
 		} else if (cmd.equals("DOWN")) {
 			coord = Modification.getCoord(this.loc.getX(), this.loc.getY() + 1);
+		} else {
+			System.out.println(cmd + " is not a valid movement");
+			return false;
 		}
 
 		for (Modification mod : Modification.getModsAt(coord)) { 	// for each mod at new position
@@ -113,6 +125,42 @@ public abstract class Modification implements Cloneable {
 		}
 
 		return true;	// return true if no mods have returned false
+	}
+	
+	public boolean move(String cmd){
+		switch (cmd) {
+			case "LEFT":
+				if (this.canMove(cmd)) {
+					board.changeLoc(this.getCoord(), getCoord(this.loc.getX() - 1, this.loc.getY()), this.loc);
+					this.loc.setX(this.loc.getX() - 1);
+					return true;
+				}
+				break;
+			case "RIGHT":
+				if (this.canMove(cmd)) {
+					board.changeLoc(this.getCoord(), getCoord(this.loc.getX() + 1, this.loc.getY()), this.loc);
+					this.loc.setX(this.loc.getX() + 1);
+					return true;
+				}
+				break;
+			case "UP":
+				if (this.canMove(cmd)) {
+					board.changeLoc(this.getCoord(), getCoord(this.loc.getX(), this.loc.getY() - 1), this.loc);
+					this.loc.setY(this.loc.getY() - 1);
+					return true;
+				}
+				break;
+			case "DOWN":
+				if (this.canMove(cmd)) {
+					board.changeLoc(this.getCoord(), getCoord(this.loc.getX(), this.loc.getY() + 1), this.loc);
+					this.loc.setY(this.loc.getY() + 1);
+					return true;
+				}
+				break;
+			default:
+				return false;
+		}
+		return false;
 	}
 
 	// Abstract Methods

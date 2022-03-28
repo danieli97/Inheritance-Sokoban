@@ -7,6 +7,7 @@ public class Box extends Modification {
 
 	// Attributes
 	// Inherited from Parent Modification Class
+	public boolean stored;
 
 	// Static
 	private static final String DEFAULT_BOX = "Box";
@@ -20,12 +21,19 @@ public class Box extends Modification {
 		this.letter = "B";
 		this.img = DEFAULT_BOX;
 		this.canPush = true;
+		this.tag = "Box";
+		this.stored = false;
 
 	}
 
 	// Methods
 
 	// Overrides
+	@Override
+	public boolean isBoxStored(){
+		return this.stored;
+	}
+
 	@Override
 	public Modification makeCopy() {
 
@@ -57,7 +65,7 @@ public class Box extends Modification {
 		for (Modification mod : getModsAt(coord)) {
 			if (!mod.isOnFloor()) {
 				// only changed line:
-				if (!mod.getLetter().equals("B") && mod.canBePushed()) {	// one box cannot be pushed into another
+				if (!mod.getTag().equals("Box") && mod.canBePushed()) {	// one box cannot be pushed into another
 					return mod.canMove(cmd);
 				} else {
 					return false;
@@ -70,18 +78,18 @@ public class Box extends Modification {
 
 	@Override
 	public String update(String cmd) {
-
 		switch (cmd) {
 			case "PLEFT":
 				for (Modification mod : getModsAt(this.getCoord())) {
-					if (mod.getLetter().equals("P")) {
-						board.changeLoc(this.getCoord(), getCoord(this.loc.getX() - 1, this.loc.getY()), this.loc);
-						this.loc.setX(this.loc.getX() - 1);
+					if (mod.getTag().equals("Player")) {
+						this.move("LEFT");
 						for (Modification newMod : getModsAt(this.getCoord())) {
-							if (newMod.getLetter().equals("S")) {
+							if (newMod.getTag().equals("Storage")) {
+								this.stored = true;
 								this.img = STORAGE_BOX;
 								return null;
 							} else {
+								this.stored = false;
 								this.img = DEFAULT_BOX;
 							}
 						}
@@ -90,14 +98,15 @@ public class Box extends Modification {
 				return null;
 			case "PRIGHT":
 				for (Modification mod : getModsAt(this.getCoord())) {
-					if (mod.getLetter().equals("P")) {
-						board.changeLoc(this.getCoord(), getCoord(this.loc.getX() + 1, this.loc.getY()), this.loc);
-						this.loc.setX(this.loc.getX() + 1);
+					if (mod.getTag().equals("Player")) {
+						this.move("RIGHT");
 						for (Modification newMod : getModsAt(this.getCoord())) {
-							if (newMod.getLetter().equals("S")) {
+							if (newMod.getTag().equals("Storage")) {
+								this.stored = true;
 								this.img = STORAGE_BOX;
 								return null;
 							} else {
+								this.stored = false;
 								this.img = DEFAULT_BOX;
 							}
 						}
@@ -106,14 +115,15 @@ public class Box extends Modification {
 				return null;
 			case "PUP":
 				for (Modification mod : getModsAt(this.getCoord())) {
-					if (mod.getLetter().equals("P")) {
-						board.changeLoc(this.getCoord(), getCoord(this.loc.getX(), this.loc.getY() - 1), this.loc);
-						this.loc.setY(this.loc.getY() - 1);
+					if (mod.getTag().equals("Player")) {
+						this.move("UP");
 						for (Modification newMod : getModsAt(this.getCoord())) {
-							if (newMod.getLetter().equals("S")) {
+							if (newMod.getTag().equals("Storage")) {
+								this.stored = true;
 								this.img = STORAGE_BOX;
 								return null;
 							} else {
+								this.stored = false;
 								this.img = DEFAULT_BOX;
 							}
 						}
@@ -122,15 +132,15 @@ public class Box extends Modification {
 				return null;
 			case "PDOWN":
 				for (Modification mod : getModsAt(this.getCoord())) {
-					if (mod.getLetter().equals("P")) {
-						board.changeLoc(this.getCoord(),
-								getCoord(this.loc.getX(), this.loc.getY() + 1), this.loc);
-						this.loc.setY(this.loc.getY() + 1);
+					if (mod.getTag().equals("Player")) {
+						this.move("DOWN");
 						for (Modification newMod : getModsAt(this.getCoord())) {
-							if (newMod.getLetter().equals("S")) {
+							if (newMod.getTag().equals("Storage")) {
+								this.stored = true;
 								this.img = STORAGE_BOX;
 								return null;
 							} else {
+								this.stored = false;
 								this.img = DEFAULT_BOX;
 							}
 						}

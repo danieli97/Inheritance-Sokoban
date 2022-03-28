@@ -16,6 +16,7 @@ public class Storage extends Modification {
 		this.letter = "S";
 		this.img = "Storage";
 		this.canPush = false;
+		this.tag = "Storage";
 
 	}
 

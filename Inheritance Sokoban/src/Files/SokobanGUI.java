@@ -58,6 +58,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		path = path.toAbsolutePath().getParent().getParent();
 		SokobanGUI.yourpath = path.toString() + "\\";
 		// setup board
+		// Modification.getClonables();
 		this.board = new Board(this.filename);
 		this.imageIcons = setImageIcons();
 		this.setJMenuBar(this.makeMenu());
@@ -240,15 +241,19 @@ public class SokobanGUI extends JFrame implements ActionListener {
 				this.dispose();
 				break;
 			default:
-				board.notifyObservers(cmd);
+				if (!board.getIsWon()){
+					board.notifyObservers(cmd);
+				}
 		}
 
 		// redraw
-		this.drawAll();
-		if (this.board.isSolved()) {
-			JOptionPane.showMessageDialog(this, "You won!");
+		if (!board.getIsWon()){
+			this.drawAll();
+			if (this.board.isSolved()) {
+				JOptionPane.showMessageDialog(this, "You won!");
+			}
 		}
-	}
+	}		
 
 	// Main
 	public static void main(String[] args) throws IOException {

@@ -18,6 +18,7 @@ public class Board {
 	private ArrayList<Modification> mods; 					// array list of mods
 	private int width;										// width of the board
 	private int height;										// height of the board
+	private boolean isWon;									// true if game has been won
 
 	// Constructor
 	public Board(String fileName) {
@@ -25,6 +26,7 @@ public class Board {
 		if (fileName == null) {
 			fileName = "level00.txt";
 		}
+		this.isWon = false;
 
 		// instantiate data structures
 		this.mods = new ArrayList<Modification>();
@@ -44,7 +46,7 @@ public class Board {
 		cloneTemplates.add(new Player(tempLoc));
 		cloneTemplates.add(new Wall(tempLoc));
 		cloneTemplates.add(new Storage(tempLoc));
-		// cloneTemplates.add(new {YOUR_MOD_NAME}(tempLoc));
+		// cloneTemplates.add(new YOUR_MOD_NAME(tempLoc));
 
 		// map each Modification letter to their respective instance
 		for (Modification mod : cloneTemplates) {
@@ -76,6 +78,10 @@ public class Board {
 		return this.modLocs;
 	}
 
+	public boolean getIsWon() {
+		return this.isWon;
+	}
+
 	public int getWidth() {
 		return this.width;
 	}
@@ -85,7 +91,7 @@ public class Board {
 	}
 
 	// Setup
-	public ArrayList<String[]> getLevelArray(String fileName) throws IOException {
+	private ArrayList<String[]> getLevelArray(String fileName) throws IOException {
 		/*
 		given a level file name, method reads through the file and extracts relevant
 		information
@@ -151,29 +157,35 @@ public class Board {
 		this.locs.get(newCoord).add(loc);
 	}
 
-	public boolean isSolved() {
+	protected boolean isSolved() {
 		/*
 		checks to see if there are any boxes not on storage
 		returns true if the current state of the board is solved
 		returns false if the state is unsolved
 		*/
 		for (Modification mod : this.mods) {
-			if (mod.img == "Box") {
+			if (mod.getTag().equals("Box") && !mod.isBoxStored()){
 				return false;
 			}
 		}
+		this.isWon = true;
 		return true;
 	}
-
-	public void notifyObservers(String cmd) {
+	
+	protected void notifyObservers(String cmd) {
 		/*
 		notifies all observers (modifications) of a command
 		for each observer, execute update with command and get return
 		if return is not null then notify observers again with new command
 		*/
+		LinkedList<String> newCmds = new LinkedList<String>();
+
 		for (Modification obs : this.mods) {
-			String newCmd = obs.update(cmd);
-			if (newCmd != null) {
+			newCmds.add(obs.update(cmd));
+		}
+
+		for (String newCmd : newCmds){
+			if (newCmd != null){
 				this.notifyObservers(newCmd);
 			}
 		}

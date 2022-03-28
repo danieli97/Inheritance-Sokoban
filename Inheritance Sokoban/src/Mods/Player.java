@@ -16,6 +16,7 @@ public class Player extends Modification {
 		this.letter = "P";
 		this.img = "Player";
 		this.canPush = false;
+		this.tag = "Player";
 
 	}
 
@@ -40,31 +41,25 @@ public class Player extends Modification {
 	public String update(String cmd) {
 		switch (cmd) {
 			case "LEFT":
-				if (this.canMove(cmd)) {
-					board.changeLoc(this.getCoord(), getCoord(this.loc.getX() - 1, this.loc.getY()), this.loc);
-					this.loc.setX(this.loc.getX() - 1);
+				if (this.move(cmd)){
 					return "PLEFT";
 				}
+				break;
 			case "RIGHT":
-				if (this.canMove(cmd)) {
-					board.changeLoc(this.getCoord(), getCoord(this.loc.getX() + 1, this.loc.getY()), this.loc);
-					this.loc.setX(this.loc.getX() + 1);
+				if (this.move(cmd)){
 					return "PRIGHT";
 				}
+				break;
 			case "UP":
-				if (this.canMove(cmd)) {
-					board.changeLoc(this.getCoord(), getCoord(this.loc.getX(), this.loc.getY() - 1), this.loc);
-					this.loc.setY(this.loc.getY() - 1);
+				if (this.move(cmd)){
 					return "PUP";
 				}
+				break;
 			case "DOWN":
-				if (this.canMove(cmd)) {
-					board.changeLoc(this.getCoord(), getCoord(this.loc.getX(), this.loc.getY() + 1), this.loc);
-					this.loc.setY(this.loc.getY() + 1);
+				if (this.move(cmd)){
 					return "PDOWN";
 				}
-			default:
-				return null;
 		}
+		return null;
 	}
 }
