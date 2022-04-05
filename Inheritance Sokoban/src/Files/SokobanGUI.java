@@ -1,6 +1,6 @@
 package Files;
 
-import Mods.Modifications;
+import Mods.Mod_Config;
 
 import java.awt.Image;
 import java.awt.Color;
@@ -61,7 +61,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		path = path.toAbsolutePath().getParent().getParent();
 		SokobanGUI.yourpath = path.toString() + "\\";
 		// setup board
-		this.clonables = Modifications.getClonables();
+		this.clonables = Mod_Config.getClonables();
 		this.board = new Board(this.filename, this.clonables);
 		this.imageIcons = setImageIcons();
 		this.setJMenuBar(this.makeMenu());

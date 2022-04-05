@@ -7,7 +7,7 @@ import java.util.Map;
 import Files.Location;
 import Files.Modification;
 
-public class Modifications {
+public class Mod_Config {
 
     public static Map<String, Modification> getClonables(){
 		Map<String, Modification> clonables = new HashMap<String, Modification>();
