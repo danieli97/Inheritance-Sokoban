@@ -45,7 +45,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 	private static String yourpath;
 	// Variable
 	private Map<Integer, JLabel> levelMap;		// Map coordinate to label at that coordinate
-	private Map<String, ImageIcon> imageIcons;	// Map Modification letter to associated image icon
+	private Map<String, ImageIcon> imageIcons;	// Map Icon name to associated image icon
 	private Board board;						// current Board
 	private String filename;					// name of level file
 	private Map<String, Modification> clonables;

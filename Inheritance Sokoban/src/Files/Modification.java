@@ -10,7 +10,7 @@ public abstract class Modification implements Cloneable {
 	protected boolean onFloor;		// true if object may be moved on top of
 	protected String img;			// name of file containing icon for this Modification
 	protected boolean canPush;		// true if the object can be pushed\
-	protected String tag; 			// 
+	protected String tag; 			// what kind of object is this
 	protected static Board board;	// holds current board (static = shared between all Modifications)
 
 	// Methods
