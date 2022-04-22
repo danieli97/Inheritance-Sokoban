@@ -140,12 +140,6 @@ public abstract class Modification implements Cloneable {
 	* Based on the cmd given, this method determines whether or not the current mod has move in the specified direction.
 	* @param 	cmd	a string that represents the direction the player has moved
 	* @return		a boolean value that represents whether or not the modification is able to move in the specified direction
-	*//**
-	*
-	*
-	*
-	*
-	*
 	*/
 	public boolean move(String cmd){
 		switch (cmd) {
