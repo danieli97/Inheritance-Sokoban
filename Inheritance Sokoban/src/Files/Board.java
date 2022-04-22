@@ -77,7 +77,7 @@ public class Board {
 		given a level file name, method reads through the file and extracts relevant
 		information
 		*/
-		URL fileURL = Board.class.getClassLoader().getResource("Levels//" + fileName);			// get fileURL using level file name
+		URL fileURL = Board.class.getClassLoader().getResource("Levels\\" + fileName);			// get fileURL using level file name
 
 		BufferedReader read = new BufferedReader(new InputStreamReader(fileURL.openStream()));	// open buffer reader for file
 
