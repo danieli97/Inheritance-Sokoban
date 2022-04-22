@@ -19,6 +19,8 @@ public class Mod_Config {
 		cloneTemplates.add(new Player(tempLoc));
 		cloneTemplates.add(new Wall(tempLoc));
 		cloneTemplates.add(new Storage(tempLoc));
+	    	cloneTemplates.add(new Ice(tempLoc));
+	    	cloneTemplates.add(new PullBox(tempLoc));
 		// cloneTemplates.add(new YOUR_MOD_NAME(tempLoc));
 
 		// map each Modification letter to their respective instance
