@@ -92,11 +92,17 @@ public abstract class Modification implements Cloneable {
 	}
 
 	// Functions
+	
+	/**
+	* Returns a boolean variable, which should be set to true if the current mod can move, and false if the current mod cannot move.
+	* The cmd argument must be one of the following: "UP", "DOWN", "LEFT", "RIGHT".
+	* Based on the cmd given, this method determines whether or not the current mod can move in the specified direction.
+	* @param 	cmd	a string that represents the direction the player has moved
+	* @return		a boolean value that represents whether or not the modification is able to move in the specified direction
+	*/
 	public boolean canMove(String cmd) {
 		/*
-		check if this object can move according to the command given
-		return true if the current mod can move
-		return false if the mod cannot move
+		
 		*/
 
 		// get coordinate that the mod will be moved to
@@ -127,6 +133,20 @@ public abstract class Modification implements Cloneable {
 		return true;	// return true if no mods have returned false
 	}
 	
+	
+	/**
+	* Returns a boolean variable, which should be set to true if the current mod has moved, and false if the current mod doesnt moved.
+	* The cmd argument must be one of the following: "UP", "DOWN", "LEFT", "RIGHT".
+	* Based on the cmd given, this method determines whether or not the current mod has move in the specified direction.
+	* @param 	cmd	a string that represents the direction the player has moved
+	* @return		a boolean value that represents whether or not the modification is able to move in the specified direction
+	*//**
+	*
+	*
+	*
+	*
+	*
+	*/
 	public boolean move(String cmd){
 		switch (cmd) {
 			case "LEFT":
