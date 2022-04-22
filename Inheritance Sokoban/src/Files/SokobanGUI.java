@@ -57,7 +57,7 @@ public class SokobanGUI extends JFrame implements ActionListener {
 		this.filename = "level00.txt";
 		this.levelMap = new HashMap<Integer, JLabel>();
 		// get path
-		Path path = Paths.get("Files\\SokobanGUI.java");
+		Path path = Paths.get("src\\Files\\SokobanGUI.java");
 		path = path.toAbsolutePath().getParent().getParent();
 		SokobanGUI.yourpath = path.toString() + "\\";
 		// setup board
