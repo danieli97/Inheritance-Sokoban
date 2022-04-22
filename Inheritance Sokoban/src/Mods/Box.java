@@ -33,7 +33,7 @@ public class Box extends Modification {
 	public boolean isBoxStored(){
 		return this.stored;
 	}
-
+	
 	@Override
 	public Modification makeCopy() {
 
@@ -47,7 +47,15 @@ public class Box extends Modification {
 
 		return Object;
 	}
-
+	
+	/**
+	* Returns a string variable, which can be set to any of the follwoing values: "PLEFT", "PRIGHT", "PUP", "PDOWN".
+	* The cmd argument must be one of the following: "UP", "DOWN", "LEFT", "RIGHT".
+	* Based on the cmd given, this method returns a value that specifies which direction the player has moved.
+	* This return value is then returned and given as a cmd to the other observer objects, which will be notified that the player has moved.
+	* @param 	cmd	a string that represents the direction the player has moved
+	* @return		a boolean value that represents whether or not the modification is able to move in the specified direction
+	*/
 	@Override
 	public boolean canMove(String cmd) {
 		int coord = 0;
@@ -75,7 +83,16 @@ public class Box extends Modification {
 
 		return true;
 	}
-
+	
+	
+	/**
+	* Returns a string variable, which can be set to null.
+	* The cmd argument must be one of the following: "PUP", "PDOWN", "PLEFT", "PRIGHT".
+	* Based on the cmd given, this method is an override of the canMove method in the Modification class, it moves the box in the specificied player movement direction.
+	* @param 	cmd	a string that represents the direction the player has moved
+	* @return		a null variable
+	* @see 		Modification.canMove()
+	*/
 	@Override
 	public String update(String cmd) {
 		switch (cmd) {
