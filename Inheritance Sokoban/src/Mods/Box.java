@@ -49,12 +49,14 @@ public class Box extends Modification {
 	}
 	
 	/**
-	* Returns a string variable, which can be set to any of the follwoing values: "PLEFT", "PRIGHT", "PUP", "PDOWN".
+	* Returns a boolean variable, which should be set to true if the current mod can move, and false if the current mod cannot move.
 	* The cmd argument must be one of the following: "UP", "DOWN", "LEFT", "RIGHT".
-	* Based on the cmd given, this method returns a value that specifies which direction the player has moved.
-	* This return value is then returned and given as a cmd to the other observer objects, which will be notified that the player has moved.
+	* Based on the cmd given, this method determines whether or not the current mod can move in the specified direction.
+	* This override of the canMove from the Modification class only has one difference: it checks if the current Box will be moving into a different Box. 
+	* Meaning, if the current box is being moved into a different box, it will return false, and true if not.
 	* @param 	cmd	a string that represents the direction the player has moved
 	* @return		a boolean value that represents whether or not the modification is able to move in the specified direction
+	* @see 		Modifications.canMove()
 	*/
 	@Override
 	public boolean canMove(String cmd) {
@@ -91,7 +93,6 @@ public class Box extends Modification {
 	* Based on the cmd given, this method is an override of the canMove method in the Modification class, it moves the box in the specificied player movement direction.
 	* @param 	cmd	a string that represents the direction the player has moved
 	* @return		a null variable
-	* @see 		Modification.canMove()
 	*/
 	@Override
 	public String update(String cmd) {
