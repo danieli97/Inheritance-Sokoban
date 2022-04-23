@@ -10,7 +10,7 @@ public class PullBox extends Modification {
 	public boolean stored;
 
 	// Static
-	private static final String DEFAULT_BOX = "Box";
+	private static final String DEFAULT_BOX = "PullBox";
 	private static final String STORAGE_BOX = "box_on_storage";
 
 	// Constructor
